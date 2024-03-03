@@ -126,9 +126,9 @@
 Let us begin by briefly reviewing the definition of \emph{partial order}, 
 \emph{linear order}, and \emph{well-order}.
 
-\begin{definition}
+\begin{definition} \label{def: poset}
   Suppose that $X$ is a set and $\leq$ is a binary relation on $X$. Then $\leq$ is a \emph{partial order} 
-  on $X$ if it is
+  on $X$ (or $(X, \leq)$ is a \emph{partial order}) if it is
   \begin{enumerate}
     \item \emph{Reflexive}: $x \leq x$ for all $x \in X$;
     \item \emph{Transitive}: for all $x,y,z \in X$, if $x \leq y$ and $y \leq z$, then $x \leq z$; and
@@ -1164,5 +1164,592 @@ construct such a set containing only circles of radius $1$).
   so we have maintained the recursion requirements. This completes the construction of 
   $\mc{C}$ and hence the proof of the theorem.
 \end{proof}
+
+\chapter{Lecture 3: The axiom of choice and its consequences}
+
+The axiom of choice is an incredibly important, useful, and sometimes controversial 
+axiom in set theory. It forms the ``$\mathsf{C}$" in ``$\mathsf{ZFC}$", which are the 
+standard axioms of set theory. (The ``$\mathsf{Z}$" and  ``$\mathsf{F}$" stand for ``Zermelo" 
+and ``Fraenkel", respectively. ``$\mathsf{ZF}$" denotes the axioms of $\mathsf{ZFC}$ without 
+the axiom of choice.) In this lecture, we review the axiom of choice and its equivalent 
+formulations and present a couple basic applications thereof.
+
+\section{The axiom of choice}
+
+Roughly speaking, the axiom of choice asserts that, given any collection of nonempty sets, 
+one can form a new collection by choosing one element from each set. More formally, it can be 
+formulated as follows.
+
+\begin{definition}[Axiom of choice]
+  The \emph{axiom of choice} is the following assertion: Whenever $I$ is a set and 
+  $\langle X_i \mid i \in I \rangle$ is such that each $X_i$ is a nonempty set, there is 
+  a sequence $\langle y_i \mid i \in I \rangle$ such that, for all $i \in I$, we have 
+  $y_i \in X_i$.
+\end{definition}
+
+The axiom of choice can also be phrased in terms of functions:
+\begin{quote}
+  Whenever $I$ is a set and $F$ is a function with domain $I$ such that $F(i)$ is a nonempty set 
+  for all $i \in I$, there is a function $g$ with domain $I$ such that $g(i) \in F(i)$ for all 
+  $i \in I$.
+\end{quote}
+
+As we shall see, the axiom of choice is incredibly powerful and is essential to proving a number 
+of important theorems. It can also lead to some counterintuitive consequences, which has led 
+to it being somewhat controversial. Let us note now, though, that, due to a theorem of 
+G\"{o}del, there is no cost in consistency strength in assuming the axiom of choice.
+
+\begin{theorem}[G\"{o}del]
+  If the axioms of $\mathsf{ZF}$ are consistent, then so are the axioms of $\mathsf{ZFC}$.
+\end{theorem}
+
+(We refer the reader to any standard set theory textbook for a precise statement of the axioms 
+of $\mathsf{ZFC}$.)
+
+There are a number of statements that are equivalent to the axiom of choice over $\mathsf{ZF}$; 
+we mention here two especially important ones. In fact, we have already seen one of them: the 
+well-ordering principle, which states that every set can be well-ordered:
+
+\begin{definition}[Well-ordering principle]
+  The \emph{well-ordering principle} is the following assertion: Whenever $X$ is a set, there is 
+  a binary relation $\preceq$ on $X$ such that $(X, \preceq)$ is a well-order.
+\end{definition}
+
+The second important statement that is equivalent to the axiom of choice is known as 
+\emph{Zorn's lemma}. To state it properly, we first need a preliminary definition.
+
+\begin{definition}
+  Suppose that $(X, \leq)$ is a partial order (recall Definition \ref{def: poset}).
+  \begin{enumerate}
+    \item A subset $K \subseteq X$ is called a \emph{chain} if $K$ is linearly ordered by 
+    $\leq$, i.e., for all $x,y \in K$, either $x \leq y$ or $y \leq x$.
+    \item If $K \subseteq X$ and $z \in X$, then we say that $z$ is an \emph{upper bound} 
+    for $K$ if $x \leq z$ for all $x \in K$.
+  \end{enumerate}
+\end{definition}
+
+We can now state Zorn's lemma.
+
+\begin{definition}[Zorn's lemma]
+  Zorn's lemma is the following assertion: Suppose that $(X, \leq)$ is a nonempty partial order 
+  such that every chain $K \subseteq X$ has an upper bound. Then $X$ contains a \emph{maximal} 
+  element, i.e., there is $y \in X$ such that, for all $z \in X$, we have $y \not< z$.
+\end{definition}
+
+The following theorem establishes the equivalence of these three important statements.
+Recall that, if $\mathsf{T}$ is a set of axioms and $\varphi$ and $\psi$ are two statements 
+in the language of $\mathsf{T}$, then we say that $\varphi$ and $\psi$ are \emph{equivalent} 
+over $\mathsf{T}$ if one can prove $\psi$ from $\mathsf{T} \cup \{\varphi\}$ \emph{and} one 
+can prove $\varphi$ from $\mathsf{T} \cup \{\psi\}$.
+
+ We leave 
+its proof as an exercise.
+
+\begin{theorem}
+  Over the axioms of $\mathsf{ZF}$, the following are equivalent:
+  \begin{enumerate}
+    \item the axiom of choice;
+    \item the well-ordering principle;
+    \item Zorn's lemma.
+  \end{enumerate}
+\end{theorem}
+
+We say some applications of the well-ordering principle in the previous lecture.
+We now present two further applications, one using the axiom of choice directly, and the other 
+using Zorn's lemma. Both are related to the general mathematical problem of measuring the 
+\emph{size} of mathematical objects.
+
+\section{A non-measurable set of real numbers}
+
+This section concerns the general task of measuring the size of sets of real numbers. 
+One could of course measure each set of real numbers by its cardinality, but this does not 
+really match with our geometric intuition about $\mathbb{R}$. For example, we already 
+have some intuition about what the measures of certain very simple sets of real numbers 
+should be. For instance, it is natural to measure \emph{intervals} of real numbers by their 
+length:
+
+\begin{definition}
+  If $a \leq b$ are real numbers, then 
+  \begin{itemize}
+    \item the \emph{closed interval} $[a,b]$ is the set $\{x \in \mathbb{R} \mid a \leq x \leq b\}$; and 
+    \item the \emph{open interval} $(a,b)$ is the set $\{x \in \mathbb{R} \mid a < x < b\}$.
+  \end{itemize}
+  If $I$ equals either $[a,b]$ or $(a,b)$, then we say that $I$ is an \emph{interval} with 
+  endpoints $a$ and $b$.
+  The \emph{length} of $[a,b]$ (or $(a,b)$) is denoted $\ell([a,b])$ and is equal to 
+  $b - a$.
+\end{definition}
+
+One can also define intervals with endpoints at $\pm \infty$. For example, if $b \in \bb{R}$, then 
+$(-\infty, b] = \{x \in \mathbb{R} \mid x \leq b\}$, or 
+$(b,\infty) = \{x \in \mathbb{R} \mid b < x\}$. The length of such intervals is defined to be 
+$\infty$.
+
+One can straightforwardly extend this method of measuring sets of real numbers to other simple sets, 
+such as disjoint unions of intervals. For example, it makes sense to say that the measure of the 
+set $[0,1] \cup (2, 2.5)$ should be $1 + 0.5 = 1.5$. Or, suppose that 
+$\langle I_n \mid n \in \mathbb{N} \rangle$ is a sequence of pairwise disjoint intervals such that, 
+for all $n \in \mathbb{N}$, we have $\ell(I_n) = 1/2^n$. Then it would make sense to say that the 
+measure of the union $\bigcup_{n \in \mathbb{N}} I_n$ should be
+\[
+  \sum_{n = 0}^\infty 1/2^n = 1 + 1/2 + 1/4 + 1/8 + \ldots = 2.
+\]
+It is natural now to ask whether this method of measurement can be extended to measure the size 
+of \emph{all} subsets of $\mathbb{R}$. Of course, in order for this question to make sense, we must 
+ask that this notion of measure satisfies certain nice properties that we would expect to hold of 
+functions that measure the size of sets of real numbers. We extract these properties in the 
+following definition.
+
+\begin{definition} \label{def: nice measure}
+  Suppose that $m : \power(\mathbb{R}) \rightarrow [0,\infty]$ (i.e., $m$ assigns to every subset 
+  $X \subseteq \mathbb{R}$ a measure $m(X)$ that is either a non-negative real number or $\infty$). 
+  We say that $m$ is a \emph{nice measure} if it satisfies the following properties:
+  \begin{enumerate}
+    \item If $a \leq b$ are real numbers and $I$ is an interval with endpoints $a$ and $b$, then 
+    $m(I) = b-a$.
+    \item (Monotonicity) If $X \subseteq Y$ are subsets of $\bb{R}$, then $m(X) \leq m(Y)$.
+    \item (Translation invariance) If $X \subseteq \bb{R}$ and $a \in \bb{R}$, then 
+    $m(X) = m(a + X)$, where $a + X$ denotes the set $\{a + x \mid x \in X\}$. In other words, 
+    the measure of a set $X$ should not change if we simply shift it horizontally on the number line.
+    \item (Countable additivity) If $\mathcal{F}$ is a finite or countably infinite collection of 
+    subsets of $\bb{R}$, then
+    \[
+      m\left(\bigcup \mathcal{F}\right) = \sum_{X \in \mathcal{F}} m(X).
+    \]
+    In other words, if $\langle X_n \mid n \in \mathbb{N} \rangle$ is a sequence of pairwise 
+    disjoint subsets of $\bb{R}$ and $X  = \bigcup_{n \in \mathbb{N}} X_n$, then 
+    \[
+      m(X) = \sum_{n \in \bb{N}} m(X_n) = m(X_0) + m(X_1) + m(X_2) + \ldots.
+    \]
+  \end{enumerate}
+\end{definition}
+
+Perhaps surprisingly, we will now show that, assuming the axioms of $\mathsf{ZFC}$, there 
+are no nice measures. In other words, it is \emph{impossible} to extend the notion of length to 
+measure \emph{all} subsets of $\mathbb{R}$ in a way that comports with our intuitions about 
+how measures of size should behave.
+
+\begin{theorem}[Vitali] \label{thm: vitali}
+  There are no nice measures.
+\end{theorem}
+
+\begin{proof}
+  Suppose for the sake of contradiction that $m: \power(\mathbb{R}) \rightarrow [0,\infty]$ 
+  is a nice measure. Recall that $\bb{Q}$ denotes the set of \emph{rational} numbers. 
+  $\bb{Q}$ is a countably infinite set, and it is also dense in $\mathbb{R}$, meaning that 
+  every nonempty open interval $(a,b)$ contains an element of $\mathbb{Q}$. Given 
+  a real number $a \in \bb{R}$, let $a + \bb{Q}$ denote the set 
+  $\{a + q \mid q \in \bb{Q}\}$.
+  
+  Let $\mathcal{F}$ denote the set $\{a + \bb{Q} \mid a \in \bb{R}\}$. Notice that there will 
+  be distinct real numbers $a \neq b$ such that $a + \bb{Q} = b + \bb{Q}$; in fact, this 
+  will happen if and only if the difference $b - a$ is rational. Since $\mathcal{F}$ 
+  is a \emph{set}, if $a \neq b$ and $a + \bb{Q} = b + \bb{Q}$, then $\mathcal{F}$ does not 
+  somehow contain \emph{separate copies} $a + \bb{Q}$ and $b + \bb{Q}$. Rather, it contains 
+  one set that equals both $a + \bb{Q}$ and $b + \bb{Q}$. Moreover, $\mathcal{F}$ consists of 
+  \emph{pairwise disjoint} sets. The verifications of these facts form the following exercise.
+  
+  \begin{exercise} \label{exercise: vitali}
+    Suppose that $a,b \in \bb{R}$. Prove the following.
+    \begin{enumerate}
+      \item $(a + \bb{Q}) = (b + \bb{Q})$ if and only if $b-a \in \bb{Q}$.
+      \item If $(a + \bb{Q}) \neq (b + \bb{Q})$, then $(a + \bb{Q}) \cap (b + \bb{Q}) = \emptyset$.
+    \end{enumerate}
+  \end{exercise}
+  
+  \begin{lemma}
+    For every $a \in \bb{R}$, we have $(a + \bb{Q}) \cap [0,1] \neq \emptyset$.
+  \end{lemma}
+  
+  \begin{proof}
+    Fix $a \in \bb{R}$. Since $\bb{Q}$ is dense in $\bb{R}$, we can fix a rational number 
+    $q$ in the interval $(-a, -a + 1)$. Then $a + q \in a + \bb{Q}$, and we have the following:
+    \begin{itemize}
+      \item $a + q \geq a + (-a) = 0$;
+      \item $a + q \leq a + (-a + 1) = 1$.
+    \end{itemize}
+    Therefore, $a + q \in (a + \bb{Q}) \cap [0,1]$.
+  \end{proof}
+  
+  We can therefore apply the axiom of choice to the family of pairwise disjoint nonempty sets 
+  \[
+    \{(a + \bb{Q}) \cap [0,1] \mid a \in \bb{R}\}
+  \] 
+  to find a set $X \subseteq [0,1]$ that contains exactly 
+  one point from each element of $\mathcal{F}$. In other words, for each $a \in \bb{R}$, there is 
+  exactly one element in the intersection $X \cap (a + \bb{Q})$.
+  
+  We will eventually reach a contradiction using the fact that our measure $m$ must assign a value 
+  to the set $X$. We first need a couple of lemmas.
+  
+  \begin{lemma} \label{lemma: pairwise_disjoint}
+    If $p$ and $q$ are two distinct rational numbers, then $(p + X) \cap (q + X) = \emptyset$.
+  \end{lemma}
+  
+  \begin{proof}
+    Suppose for the sake of contradiction that $p$ and $q$ are distinct rational numbers 
+    and $(p + X) \cap (q + X) \neq \emptyset$. Fix a number $a \in (p + X) \cap (q + X)$. 
+    Then there are $x_p, x_q \in X$ such that $a = p + x_p = q + x_q$. Since $p \neq q$, 
+    we must have $x_p \neq x_q$. But rearranging the equation in the previous sentence yields 
+    \[
+      x_p - x_q = q - p.
+    \]
+    Since $q - p$ is rational, Exercise \ref{exercise: vitali} implies that $x_p + \bb{Q} = 
+    x_p + \bb{Q}$. In other words, $x_p$ and $x_q$ are both elements of $x_p + \bb{Q}$. 
+    This contradicts the fact that $x_p, x_q \in X$ and $X$ contains only one element of 
+    $x_p + \bb{Q}$.
+  \end{proof}
+  
+  Let $C = \bb{Q} \cap [-1,1]$ be the set of all rational numbers between $-1$ and $1$, and 
+  let 
+  \[
+    U = \bigcup_{q \in C} (q + X).
+  \]   
+  
+  \begin{lemma} \label{lemma: sandwich}
+    $[0,1] \subseteq U \subseteq [-1,2]$.
+  \end{lemma}
+  
+  \begin{proof}
+    We first show that $[0,1] \subseteq U$. Fix $a \in [0,1]$, and find $b \in X \cap (a + \bb{Q})$. 
+    Then $q = a - b$ is a rational number. Moroever, since $a$ and $b$ are both in the 
+    interval $[0,1]$, we must have $q \in [-1,1]$. But then $a = q + b \in q + X$, and 
+    $q + X \subseteq U$, so $a \in U$.
+    
+    We next show that $U \subseteq [-1,2]$. Fix $a \in U$. Then there is a rational number 
+    $q \in [-1,1]$ and a $b \in X$ such that $a = q + b$. Since $b \in [0,1]$, it follows 
+    that $a \in [0-1, 1+1] = [-1,2]$.
+  \end{proof}
+  We are now ready to reach our contradiction. By Lemma \ref{lemma: sandwich} and 
+  properties (1) and (2) of Definition \ref{def: nice measure}, we know that
+  \[
+    1 \leq m(U) \leq 3.
+  \]
+  Moreover, by Lemma \ref{lemma: pairwise_disjoint}, we know that the family $\{q + X 
+  \mid q \in C\}$ is pairwise disjoint. Also, by definition of $U$, we have 
+  $U = \bigcup_{q \in C} (q + X)$. Thus, by property (4) of Definition \ref{def: nice measure}, 
+  we have
+  \[
+    m(U) = \sum_{q \in C} m(q + X).
+  \]
+  By property (3) of Definition \ref{def: nice measure}, we know that $m(q + X) = m(X)$ for all 
+  $q \in C$, so
+  \[
+    m(U) = \sum_{q \in C} m(X).
+  \]
+  If $m(X) = 0$, then this yields
+  \[
+    m(U) = \sum_{q \in C} 0 =0 + 0 + 0 + \ldots =  0,
+  \]
+  contradicting the fact that $m(U) \geq 1$. On the other hand, if $m(X) > 0$, then we have
+  \[
+    m(U) = \sum_{q \in C} m(X) = m(X) + m(X) + m(X) + \ldots = \infty,
+  \]
+  contradicting the fact that $m(U) \leq 3$. In either case, we reach a contradiction, therefore 
+  completing the proof of the theorem.
+\end{proof}
+
+We end this section by noting that some use of the axiom of choice really is necessary in the proof 
+of Theorem \ref{thm: vitali}, due to the following theorem of Solovay. In the statement of the 
+theorem, an \emph{inaccessible cardinal} is a (relatively small) example of a \emph{large cardinal} 
+(formally, an inaccessible cardinal is an uncountable, regular, strong limit cardinal). It is not 
+necessary to understand precisely what it is; we only emphasize that the theory 
+\[
+``\mathsf{ZFC} + \text{ there exists an inaccessible cardinal}"
+\] 
+is considered to be a relatively mild extension of $\mathsf{ZFC}$.
+
+\begin{theorem}[Solovay]
+  Suppose that the theory 
+  \[
+  ``\mathsf{ZFC} + \text{ there exists an inaccessible cardinal}"
+  \]
+  is consistent. Then so is the theory $``\mathsf{ZF} + \text{ there exists a nice measure}"$.
+\end{theorem}
+
+\section{Nonprincipal ultrafilters}
+
+Recall that, given a set $X$, the \emph{power set} of $X$, denoted $\power(X)$, is defined to be 
+the set of all subsets of $X$, i.e.,
+\[
+  \power(X) = \{Z \mid Z \subseteq X\}.
+\]
+Recall also that, if $X$ is a set and $Y \subseteq X$, then $X \setminus Y$ is called the 
+\emph{complement of $Y$ in $X$}, and 
+\[
+  X \setminus Y = \{x \in X \mid x \notin Y\}.
+\]
+In particular, $X \setminus Y$ satisfies:
+\begin{itemize}
+  \item $Y \cup (X \setminus Y) = X$;
+  \item $Y \cap (X \setminus Y) = \emptyset$.
+\end{itemize}
+Given a nonempty set $X$, a \emph{filter} over $X$ can be thought of as a way of specifying 
+what it means to be a ``large" subset of $X$. Formally, it is defined as follows.
+
+\begin{definition} \label{def: filter}
+  Suppose that $X$ is a nonempty set. A \emph{filter} over $X$ is a set 
+  $\mathcal{F} \subseteq \power(X)$ with the following properties:
+  \begin{enumerate}
+    \item $X \in \mathcal{F}$ and $\emptyset \notin \mathcal{F}$;
+    \item for all $Y,Z \in \power(X)$, if $Y \subseteq Z$ and $Y \in \mathcal{F}$, 
+    then $Z \in \mathcal{F}$;
+    \item for all $Y,Z \in \power(X)$, if $Y \in \mathcal{F}$ and $Z \in \mathcal{F}$, 
+    then $Y \cap Z \in \mathcal{F}$.
+  \end{enumerate}
+\end{definition}
+
+Requirements (1)--(3) in Definition \ref{def: filter} should make intuitive sense if you think 
+of elements of a filter $\mathcal{F}$ over $X$ as being ``large" subsets of $X$. Namely:
+\begin{enumerate}
+  \item Requirement (1) says that the entire set $X$ is large and the empty set is not large.
+  \item Requirement (2) says that, if $Y$ is large and $Z \supseteq Y$, then $Z$ should also 
+  be large.
+  \item Requirement (3) says that if $Y$ and $Z$ are both large, then their intersection 
+  $Y \cap Z$ is large.
+\end{enumerate}
+
+\begin{exercise} \label{exercise: cofinite_filter}
+  Suppose that $X$ is an infinite set, and let 
+  \[
+    \mathcal{F} = \{Y \subseteq X \mid X \setminus Y \text{ is finite}\}.
+  \]
+  In other words, $\mathcal{F}$ consists of all subsets of $X$ that contain all but finitely 
+  many elements of $X$. Prove that $\mathcal{F}$ is a filter over $X$. This filter is 
+  called the \emph{cofinite filter over $X$}, or sometimes the \emph{Fr\'{e}chet filter 
+  over $X$}.
+\end{exercise}
+
+Note that, if $\mathcal{F}$ is a filter over a set $X$ and $Y \subseteq X$, then it cannot be the case 
+that both $Y$ and $X \setminus Y$ are in $\mathcal{F}$: if it were the case, then 
+requirement (3) of Definition \ref{def: filter} would imply that 
+$Y \cap (X \setminus Y) \in \mathcal{F}$, i.e., $\emptyset \in \mathcal{F}$, contradicting 
+requirement (1) of Definition \ref{def: filter}. Thus, $\mathcal{F}$ can contain at most one 
+of $Y$ and $X \setminus Y$. If $\mathcal{F}$ contains precisely one of these sets for 
+\emph{every} $Y \subseteq X$, then we call it an \emph{ultrafilter}.
+
+\begin{definition}
+  Suppose that $X$ is a nonempty set. A set $\mathcal{U} \subseteq \power(X)$ is called 
+  an \emph{ultrafilter} over $X$ if 
+  \begin{itemize}
+    \item $\mathcal{U}$ is a filter over $X$;
+    \item for all $Y \in \power(X)$, either $Y \in \mathcal{U}$ or $X \setminus Y \in \mathcal{U}$.
+  \end{itemize}
+\end{definition}
+
+It is easy to describe certain ultrafilteres:
+
+\begin{exercise} \label{exercise: principal_uf}
+  Suppose that $X$ is a nonempty set and $x \in X$. Let 
+  \[
+    \mathcal{U} = \{Y \in \power(X) \mid x \in Y\}.
+  \]
+  Prove that $\mathcal{U}$ is an ultrafilter over $X$.
+\end{exercise}
+
+Ultrafilters as in Exercise \ref{exercise: principal_uf} are called \emph{principal 
+ultrafilters}. More formally:
+
+\begin{definition}
+  Suppose that $X$ is a nonempty set. Then a set $\mathcal{U} \subseteq \power(X)$ is called 
+  a \emph{principal ultrafilter over $X$} if there is $x \in X$ such that
+  \[
+    \mathcal{U} = \{Y \in \power(X) \mid x \in Y\}.
+  \]
+  If $\mathcal{U}$ is an ultrafilter over $X$ and $\mathcal{U}$ is \emph{not} a principal 
+  ultrafilter over $X$, then we call it a \emph{nonprincipal ultrafilter over $X$}.
+\end{definition}
+
+We have seen that principal ultrafilters exist, so the question naturally arises whether 
+\emph{nonprincipal} ultrafilters exist. It turns out that, if $X$ is a \emph{finite} set, 
+then every ultrafilter over $X$ is finite:
+
+\begin{exercise}
+  Suppose that $X$ is a finite nonempty set and $\mathcal{U}$ is an ultrafilter over $X$. 
+  Prove that $\mathcal{U}$ is a principal ultrafilter over $X$.
+\end{exercise}
+
+In fact, we have the following:
+
+\begin{exercise}
+  Suppose that $X$ is a set and $\mc{U}$ is an ultrafilter over $\mc{U}$. Then the following 
+  are equivalent:
+  \begin{enumerate}
+    \item $\mc{U}$ is a principal ultrafilter;
+    \item there is a finite set $Y \subseteq X$ such that $Y \in \mc{U}$.
+  \end{enumerate}
+\end{exercise}
+
+However, if $X$ is infinite, then, assuming the axiom of choice holds, we can prove that 
+nonprincipal ultrafilters over $X$ exist. The following theorem, which we prove using the help 
+of Zorn's lemma, is the key.
+
+\begin{theorem} \label{thm: ultrafilter_extension}
+  Suppose that $X$ is a nonempty set and $\mathcal{F}$ is a filter over $X$. Then there 
+  is an ultrafilter $\mathcal{U}$ over $X$ such that $\mathcal{F} \subseteq \mathcal{U}$.
+\end{theorem}
+
+\begin{proof}
+  Let $P$ be the set of all filters $\mathcal{G}$ over $X$ such that $\mathcal{F} \subseteq 
+  \mathcal{G}$. Note that $P$ is nonempty, since we certainly have $\mathcal{F} \in P$. 
+  Consider the binary relation $\subseteq$ on $\mathcal{F}$. 
+  
+  \begin{lemma}
+    $(P, \subseteq)$ is a partial order.
+  \end{lemma}
+  
+  \begin{proof}
+    We need to verify all three requirements in Definition \ref{def: poset}. 
+    They all follow almost immediately from the definition of the subset relation:
+    \begin{itemize}
+      \item (Reflexive): For all $\mc{G} \in P$, we certainly have $\mc{G} \subseteq \mc{G}$.
+      \item (Transitive): For all $\mc{G}_0, \mc{G}_1, \mc{G}_2 \in P$, if 
+      $\mc{G}_0 \subseteq \mc{G}_1$ and $\mc{G}_1 \subseteq \mc{G}_2$, then clearly 
+      $\mc{G}_0 \subseteq \mc{G}_2$.
+      \item (Anti-symmetric): For all $\mc{G}, \mc{H} \in P$, if 
+      $\mc{G} \subseteq \mc{H}$ and $\mc{H} \subseteq \mc{G}$, then $\mc{G} = \mc{H}$.
+    \end{itemize}
+  \end{proof}
+  
+  We want to apply Zorn's lemma to the partial order $(P, \subseteq)$. We first need to verify 
+  that every $\subseteq$-chain in $P$ has an upper bound. This will follow from the next lemma.
+  
+  \begin{lemma}
+    Suppose that $K \subseteq P$ is nonempty and linearly ordered by $\subseteq$ (i.e., for all 
+    $\mc{G}, \mc{H} \in K$, either $\mc{G} \subseteq \mc{H}$ or $\mc{H} \subseteq {G}$.
+    Then 
+    \[
+      \bigcup K = \{Y \in \power(X) \mid \exists \mc{G} \in K \ [X \in \mc{G}]\}
+    \]
+    is an upper bound for $K$ in $(P, \subseteq)$.
+  \end{lemma}
+  
+  \begin{proof}
+    Let $\mc{H} = \bigcup K$. It is clear from the definition that $\mc{G} \subseteq \mc{H}$ 
+    for every $\mc{G} \in K$, and therefore also $\mc{F} \subseteq \mc{H}$. We therefore only 
+    need to show that $\mc{H}$ is a filter over $X$. We verify requirements (1)--(3) of 
+    Definition \ref{def: filter}.
+    \begin{enumerate}
+      \item For all $\mc{G} \in K$, we have $X \in \mc{G}$. Therefore, $X \in \mc{H}$. Similarly, 
+      for all $\mc{G} \in K$, we have $\emptyset \notin \mc{G}$. Therefore, $\emptyset \notin 
+      \mc{H}$.
+      \item Suppose that $Y,Z \in \power(X)$, $Y \subseteq Z$, and $Y \in \mc{H}$. Then there is 
+      $\mc{G} \in K$ such that $Y \in \mc{G}$. Since $\mc{G}$ is a filter, it follows that 
+      $Z \in \mc{G}$. By definition of $\mc{H}$, we then have $Z \in \mc{H}$.
+      \item Suppose that $Y,Z \in \power(X)$, $Y \in \mc{H}$, and $Z \in \mc{H}$. Then there are 
+      $\mc{G}, \mc{G}' \in K$ such that $Y \in \mc{G}$ and $Z \in \mc{G}'$. Since $K$ is 
+      linearly ordered, either $\mc{G} \subseteq \mc{G}'$ or $\mc{G}' \subseteq \mc{G}$. Without 
+      loss of generality, assume that $\mc{G} \subseteq \mc{G}'$ (the other case is 
+      symmetric). Then, since $Y \in \mc{G}$, we have $Y \in \mc{G}'$. By assumption, 
+      $Z \in \mc{G}'$, so, since $\mc{G}'$ is a filter, we have $Y \cap Z \in \mc{G}'$.
+    \end{enumerate}
+    Therefore, $\mc{H}$ is indeed a filter over $X$, completing the proof of the lemma. 
+  \end{proof}
+  
+  We have now shown that $(P, \subseteq)$ satisfies the hypotheses of Zorn's lemma. Apply 
+  Zorn's lemma to find a \emph{maximal} filter $\mathcal{G} \in P$, i.e., an element 
+  $\mathcal{G} \in P$ such that there does not exist $\mathcal{H} \in P$ such that 
+  $\mathcal{G} \subsetneq \mathcal{H}$. 
+  
+  We claim that $\mathcal{G}$ is an ultrafilter. To show this, suppose for the sake of 
+  contradiction that it is \emph{not} an ultrafilter. Then there is a set $Y \in \power(X)$ 
+  such that $Y \notin \mathcal{G}$ and $X \setminus Y \notin \mathcal{G}$. Note that 
+  $Y \neq \emptyset$, since $X \setminus \emptyset = X$ certainly is in $\mathcal{G}$. 
+  We claim that we can find an ultrafilter $\mathcal{H}$ in $P$ such that 
+  $\mathcal{G} \cup \{Y\} \subseteq \mathcal{H}$, which will contradict the maximality 
+  of $\mathcal{G}$. 
+  
+  To see this, let 
+  \[
+    \mathcal{H} = \mathcal{G} \cup \{Z \cap Y \mid Z \in \mathcal{G}\}.
+  \]
+  Clearly, $\mathcal{G} \subseteq \mathcal{H}$. Moreover, $Y \in \mathcal{H}$, since 
+  $X \in \mathcal{G}$ and $X \cap Y = Y$. Therefore, we will be done if we show that $\mathcal{H}$ 
+  is a filter over $X$. We again verify requirements (1)--(3) of Definition \ref{def: filter}.
+  \begin{enumerate}
+    \item Since $X \in \mc{G}$, we have $X \in \mc{H}$. To see that $\emptyset \notin \mc{H}$, suppose 
+    for the sake of contradiction that $\emptyset \in H$. We know that $\emptyset \notin \mc{G}$, 
+    so there must be $Z \in \mc{G}$ such that $Z \cap Y = \emptyset$. But this means 
+    that $Z \subseteq (X \setminus Y)$ (Exercise: prove this!). Therefore, since 
+    $\mc{G}$ is a filter, we must have $(X \setminus Y) \in \mc{G}$. But we chose $Y$ so that 
+    $(X \setminus Y) \notin \mc{G}$, which yields a contradiction. Thus, $\emptyset \notin \mc{G}$.
+    \item Suppose that $W, W' \in \power(X)$, $W \subseteq W'$, and $W \in \mc{H}$. If 
+    $\mc{W} \in \mc{G}$, then, since $\mc{G}$ is a filter, it follows that $W' \in \mc{G}$ 
+    and hence $W' \in \mc{H}$. Otherwise, there is $Z \in \mc{G}$ such that 
+    $W = Z \cap Y$. Let $Z' = W' \cup (X \setminus Y)$.
+    \begin{claim}
+      $Z \subseteq Z'$ and $Z' \cap Y = W'$
+    \end{claim}
+    
+    \begin{proof}
+      To show that $Z \subseteq Z'$, fix $z \in Z$. If $z \in Y$, then $z \in W \subseteq W'$, so 
+      $z \in Z'$. If $z \notin Y$, then $z \in (X \setminus Y)$, so $z \in Z'$.
+      
+      To show that $Z' \cap Y = W'$, first fix $z \in Z' \cap Y$. Then $z \in Z'$ and $z \notin 
+      (X \setminus Y)$. By the definition of $Z'$, we must have $z \in W'$. The other direction 
+      is immediate: by the definition of $Z'$, we have $W' \subseteq Z'$.
+    \end{proof}
+    Since $Z \in \mc{G}$ and $\mc{G}$ is a filter, it follows that $Z' \in \mc{G}$. But then, 
+    by the definition of $\mc{H}$, we have $Z' \cap Y = W' \in \mc{H}$.
+    \item Suppose that $W,W' \in \power(X)$, $W \in \mc{H}$, and $W' \in \mc{H}$. We want to show 
+    that $W \cap W' \in \mc{H}$. There are three cases to consider.
+    \begin{itemize}
+      \item If both $W$ and $W'$ are in $\mc{G}$, then, since $\mc{G}$ is a filter, we have 
+      $W \cap W' \in \mc{G} \subseteq \mc{H}$.
+      \item If exactly one of $W$ and $W'$ is in $\mc{G}$, suppose without loss of generality 
+      that $W \in \mc{G}$ and $W' \notin \mc{G}$ (the other case is symmetric). 
+      Then there is $Z' \in \mc{G}$ such that $W' = Z' \cap Y$. Then 
+      \[
+        W \cap W' = W \cap Z' \cap Y = (W \cap Z') \cap Y.
+      \]
+      Since $\mc{G}$ is a filter, we have $W \cap Z' \in \mc{G}$. Thus, by the definition of 
+      $\mc{H}$, we have $(W \cap Z') \cap Y \in \mc{H}$, i.e., $W \cap W' \in \mc{H}$.
+      \item If neither of $W$ nor $W'$ is in $\mc{G}$, then there are $Z,Z' \in \mc{G}$ 
+      such that $W = Z \cap Y$ and $W' = Z' \cap Y$. Then
+      \[
+        W \cap W' = (Z \cap Y) \cap (Z' \cap Y) = (Z \cap Z') \cap Y.
+      \]
+      Since $\mc{G}$ is a filter, we have $(Z \cap Z') \in \mc{G}$. Then, as in the previous 
+      case, we have $(Z \cap Z') \cap Y \in \mc{H}$, i.e., $W \cap W' \in \mc{H}$.
+    \end{itemize}
+  \end{enumerate}
+  This completes the verification that $\mc{H}$ is a filter, and hence $\mc{H}$ witnesses that 
+  $\mc{G}$ is not a maximal element of $P$, since $\mc{G} \subsetneq \mc{H}$. This is a contradiction; 
+  therefore, $\mc{G}$ is indeed an ultrafilter.
+\end{proof}
+
+\begin{corollary}
+  For every infinite set $X$, there is a nonprincipal ultrafilter over $X$.
+\end{corollary}
+
+\begin{proof}
+  Let $\mc{F} = \{Y \in \power{X} \mid X \setminus Y \text{ is finite}\}$ be the cofinite 
+  filter over $X$ (see Exercise \ref{exercise: cofinite_filter}). By Theorem \ref{thm: ultrafilter_extension}, 
+  we can find an ultrafilter $\mc{U}$ over $X$ such that $\mc{F} \subseteq \mc{U}$.
+  
+  We claim that $\mc{U}$ is a nonprincipal ultrafilter. To see this, suppose for the sake of contradiction 
+  that $\mc{U}$ is a principal ultrafilter. Then there is $x \in X$ such that 
+  \[
+    \mc{U} = \{Y \in \power(X) \mid x \in Y\}.
+  \]
+  In particular, we have $\{x\} \in \mc{U}$. But $X \setminus \{x\} \in \mc{F}$, since 
+  $X \setminus (X \setminus \{x\}) = \{x\}$ is finite. Thus, $X \setminus \{x\} \in \mc{U}$ 
+  and $\{x\} \in \mc{U}$, so 
+  \[
+    (X \setminus \{x\}) \cap \{x\} = \emptyset \in \mc{U},
+  \]
+  contradicting the fact that $\mc{U}$ is a filter over $X$. Thus, $\mc{U}$ is a nonprincipal 
+  ultrafilter.
+\end{proof}
+
+Just as with the nonexistence of a nice measure, the existence of nonprincipal ultrafilters really 
+does require some use of the axiom of choice.
+
+\begin{theorem}[Feferman]
+  If $\mathsf{ZFC}$ is consistent, then so is 
+  \[
+  ``\mathsf{ZF} + \text{ there is no nonprincipal ultrafilter over }\bb{N}".
+  \]
+\end{theorem}
 
 \end{document}
