@@ -1752,4 +1752,453 @@ does require some use of the axiom of choice.
   \]
 \end{theorem}
 
+\chapter{Lecture 4: Voting theory and Arrow's Impossibility Theorem}
+
+We are confronted with the following practical problem throughout our lives: a community 
+is trying to decide among a number of alternatives (for example, they may be trying to elect 
+a president, or to decide where to eat lunch). Each individual in the community has their 
+own preferences, but somehow the community needs to combine those preferences to come up with 
+a single choice. If the community is trying to decide between only two alternatives, then 
+there is a natural approach to this: simply choose the alternative that is preferred by 
+the majority of community members (one must decide what to do if there is a tie, but 
+this is a minor issue). However, as soon as the community is confronted with \emph{more} than 
+two alternatives, difficulties start to arise. Consider the following simple example, known 
+as \emph{Condorcet's paradox}.
+
+\begin{example}
+  Suppose that there are three individuals, $a$, $b$, and $c$, trying to choose between 
+  three alternatives, $x$, $y$, and $z$. Each individual ranks the alternatives in order of 
+  preference, and the results are as follows:
+  \begin{itemize}
+    \item Individual $a$: $x < y < z$ (i.e., $z$ is $a$'s first choice, $y$ is their second choice, 
+    and $z$ is their third choice);
+    \item Individual $b$: $y < z < x$;
+    \item Individual $c$: $z < x < y$.
+  \end{itemize}
+  Now, if alternative $x$ is chosen, then one can argue that $y$ should win instead, since 2 of the 
+  3 individuals (i.e., $a$ and $c$) prefer $y$ to $x$. But then, if $y$ is chosen, one can argue that 
+  $z$ should win instead, since $a$ and $b$ prefer $z$ to $y$. And finally, if $z$ is chosen, one 
+  can argue that $x$ should win instead, since $b$ and $c$ prefer $x$ to $z$. There thus seems to 
+  be no way to coherently amalgamate the three individual's preferences in a seemingly fair way.
+\end{example}
+
+In this lecture, we will be looking at voting systems, i.e., methods for combining 
+individual preferences into a single societal choice. To do this, we need to precisely define 
+our terms.
+
+Suppose that we have a collection of individuals, $\mc{V}$, and a collection $\mc{X}$ of alternatives 
+that they are trying to decide between ($\mc{X}$ could be political candidates, or choices of 
+what to build on a particular piece of land, or places to eat lunch). For concreteness, 
+we will always assume we are in a situation in which every individual can linearly order 
+the elements of $\mc{X}$ according to their preferences. Let $\mc{L}$ be the 
+collection of all linear orders of $\mc{X}$.
+
+\begin{definition}
+  A \emph{social preference function} is a function $f: \mc{V} \ra \mc{L}$. Such a function can 
+  be thought of as recording each individual's preferences regarding the alternatives in 
+  $\mc{X}$. Let $\mc{F}$ denote the set of \emph{all} social preference functions.
+\end{definition}
+
+If $f: \mc{V} \ra \mc{L}$ is a social preference function, then, for all $a \in \mc{V}$, we 
+will denote the linear order associated with $f(a)$ by $<_{f(a)}$. Thus, if, for instance, 
+we have $x,y \in \mc{X}$, then $x <_{f(a)} y$ is the assertion that, in the context of the 
+social preference function $f$, individual $a$ prefers $y$ over $x$.
+
+\begin{definition}
+  A \emph{voting system} is a function $\sigma : \mc{F} \ra \mc{L}$. A voting system can be 
+  thought of as a way of \emph{combining} the preferences of the individuals into a single 
+  societal ordering of the alternatives. 
+\end{definition}
+
+If $\sigma$ is a voting system and $f$ is a social preference function, then the linear order 
+associated with $\sigma(f)$ is denoted by $<_{\sigma(f)}$. Thus, if $x,y \in \mc{X}$ and 
+$f \in \mc{F}$, then $x <_{\sigma(f)} y$ is the assertion that, if $f$ records the preferences 
+of the individuals in the society, then, when using the voting system $\sigma$, the society 
+as a whole prefers $y$ to $x$.
+
+There are certain natural conditions that we might expect fair voting systems to satisfy. 
+To state them, we need one further definition.
+
+\begin{definition}
+  Suppose that $f,g \in \mc{F}$ and $x \neq y$ are elements of $\mc{X}$. We say that $f$ 
+  and $g$ \emph{agree on $\{x,y\}$} if, for all $a \in \mc{V}$, we have
+  \[
+    (x <_{f(a)} y) \Longleftrightarrow (x <_{g(a)} y).
+  \]
+  In other words, with regard to the two alternatives $x$ and $y$, every individual has the 
+  same preferences under $f$ as they do under $g$.
+\end{definition}
+
+We can now state the three desirable properties of a ``fair" voting system:
+
+\begin{itemize}
+  \item (Unanimity) For all $f \in \mc{F}$ and all distinct $x,y \in \mc{X}$, if 
+  $x <_{f(a)} y$ for all $a \in \mc{V}$, then $x <_{\sigma(f)} y$.
+  (In other words, if every individual prefers $y$ over $x$, then the society as a whole should 
+  prefer $y$ over $x$.)
+  \item (Independence) For all $f,g \in \mc{F}$ and all distinct $x,y \in \mc{X}$, 
+  if $f$ and $g$ agree on $\{x,y\}$, then $\sigma(f)$ and $\sigma(g)$ agree on $\{x,y\}$, i.e., 
+  \[
+    (x <_{\sigma(f)} y) \Longleftrightarrow (x <_{\sigma(g)} y).
+  \]
+  (In other words, the societal preference between $x$ and $y$ should only depend on the 
+  individuals' relative preferences between $x$ and $y$; it should not depend on irrelevant 
+  third options $z \in \mc{X} \setminus \{x,y\}$.)
+  \item (No dictator) There is no single individual $a^* \in \mc{V}$ such that, for all 
+  $f \in \mc{F}$ and all distinct $x,y \in \mc{X}$, we have
+  \[
+    (x <_{\sigma(f)} y) \Longleftrightarrow (x <_{f(a^*)} y).
+  \]
+  (In other words, there should not be a single individual who singlehandedly decides the 
+  society's preferences.)
+\end{itemize}
+
+Somewhat surprisingly, Kenneth Arrow proved in 1950 that, if the set of individuals 
+$\mc{V}$ is nonempty and finite and the set of alternatives $\mc{X}$ is finite and contains 
+at least 3 elements, then there are \emph{no} voting systems satisfying all three of these conditions.
+
+\begin{theorem} \label{thm: arrow}
+  Suppose that $\mc{V}$ is a nonempty finite set of individuals and $\mc{X}$ is a finite set of 
+  alternatives with at least 3 elements. If $\sigma$ is a voting system that satisfies 
+  Unanimity and Independence, then it has a dictator.
+\end{theorem}
+
+If the set $\mc{V}$ of individuals is not finite, then Theorem \ref{thm: arrow} is no longer 
+true precisely as stated, though we shall see later that a generalization of it is true. In 
+preparation for that, let us introduce a general method for constructing voting systems 
+that satisfy Unanimity and Independence:
+
+\begin{example}
+  Suppose that $\mc{U}$ is an ultrafilter over the set $\mc{V}$ of individuals. We define a 
+  function $\sigma_{\mc{U}} : \mc{F} \ra \mc{L}$ as follows. We first make the following two 
+  observations.
+  \begin{enumerate}
+    \item In order to specify an element of $\mc{L}$, it is enough to specify, for all distinct 
+    $x,y \in \mc{X}$, whether $x < y$ or $y < x$.
+    \item For all $f \in \mc{F}$ and all distinct $x,y \in \mc{X}$, exactly one of the following 
+    sets is in $\mc{U}$:
+    \begin{itemize}
+      \item $\{a \in \mc{V} \mid x <_{f(a)} y\}$;
+      \item $\{a \in \mc{V} \mid y <_{f(a)} x\}$.
+    \end{itemize}
+  \end{enumerate}
+  Now, for all $f \in \mc{F}$ and all distinct, $x,y \in \mc{X}$, we set
+  \[
+    (x <_{\sigma_{\mc{U}}(f)} y) \Longleftrightarrow (\{a \in \mc{V} \mid x <_{f(a)} y\} \in \mc{U}).
+  \]
+  We leave the verification that this describes a voting system (i.e., that $\sigma_{\mc{U}}(f) \in 
+  \mc{L}$ for all $f \in \mc{F})$ as an exercise:
+  \begin{exercise}
+    Prove that, for all $f \in \mc{F}$, $\sigma_{\mc{U}}(f)$ is a linear order.
+  \end{exercise}
+  We also leave it as an exercise to verify that $\sigma_{\mc{U}}$ satisfies Unanimity and 
+  Independence:
+  \begin{exercise}
+    Prove that $\sigma_{\mc{U}}$ satisfies Unanimity and Independence.
+  \end{exercise}
+  Finally, $\sigma_{\mc{U}}$ has a dictator if and only if $\mc{U}$ is a \emph{principal} ultrafilter:
+  \begin{exercise}
+    Prove that $\sigma_{\mc{U}}$ has a dictator if and only if $\mc{U}$ is a \emph{principal} 
+    ultrafilter.
+  \end{exercise}
+\end{example}
+
+In light of the previous example, an ultrafilter can be thought of as a ``generalized dictator" 
+(Kirman and Sondermann call them ``invisible dictators"). 
+If a voting system has a dictator, then one can determine the societal preference between 
+two alternatives $x$ and $y$ just by asking the dictator which one they prefer. In the context 
+of a voting system $\sigma_{\mc{U}}$ for a nonprincipla ultrafilter, to determine the societal 
+preference between two alternatives $x$ and $y$, one only needs to ask which one is preferred 
+by some set of individuals that is in the ultrafilter. With the notion of dictator replaced by 
+this generalized notion of dictator, Theorem \ref{thm: arrow} \emph{does} generalize to the case 
+in which the set of individuals and the set of alternatives are allowed to be infinite.
+
+\begin{theorem}[Generalized Arrow's theorem] \label{thm: generalized_arrow}
+  Suppose that $\mc{V}$ is a nonempty (possibly infinite) set of individuals and 
+  $\mc{X}$ is a set of alternatives (also possibly infinite) with at least 3 elements. 
+  If $\sigma$ is a voting system that satisfies Unanimity and Independence, then there is 
+  an ultrafilter $\mc{U}$ over $\mc{V}$ such that $\sigma = \sigma_{\mc{U}}$.
+\end{theorem}
+
+\begin{proof}
+  Fix a voting system $\sigma : \mc{F} \ra \mc{L}$ that satisfies Unanimity and Independence. 
+  First, if $A \subseteq \mc{V}$ is a set of individuals, then let $A^c$ denote 
+  $\mc{V} \setminus A$, i.e., the set of individuals \emph{not} in $A$.
+  It will be helpful to introduce the following terminology.
+  
+  \begin{definition}
+    Suppose that $x$ and $y$ are distinct elements of $\mc{X}$ and $A \subseteq \mc{V}$. 
+    Then we say that $A$ is \emph{almost decisive for $(x,y)$} if there is a social 
+    preference function $f \in \mc{F}$ such that
+    \begin{itemize}
+      \item for all $a \in A$, $x <_{f(a)} y$;
+      \item for all $a \in A^c$, $y <_{f(a)} x$;
+      \item $x <_{\sigma(f)} y$.
+    \end{itemize}
+    In other words, $A$ is elmost decisive for $(x,y)$ if there is $f \in \mc{F}$ such that 
+    $\sigma(f)$ ranks $y$ above $x$ and $A$ is precisely the set of individuals that 
+    rank $y$ above $x$ in $f$.
+  \end{definition}
+  
+  We now show in two steps that, because of Unanimity and Independence, almost decisive sets 
+  actually satisfy much stronger properties. First, we show that the definition is independent 
+  of the choice of $f \in \mc{F}$.
+  
+  \begin{lemma} \label{lemma: almost decisive}
+    Suppose that $x$ and $y$ are distinct elements of $\mc{X}$ and $A \subseteq \mc{V}$. 
+    Then the following are equivalent:
+    \begin{enumerate}
+      \item $A$ is almost decisive for $(x,y)$;
+      \item for \emph{every} $g \in \mc{F}$ such that
+      \begin{itemize}
+        \item for all $a \in A$, $x <_{g(a)} y$; and
+        \item for all $a \in A^c$, $y <_{g(a)} x$;
+      \end{itemize}
+      we have $x <_{\sigma(g)} y$.
+    \end{enumerate}
+  \end{lemma}
+  
+  \begin{proof}
+    Property (2) is stronger than property (1) by definition (Exercise: check this), 
+    so it suffices to prove that (1) implies (2). To this end, suppose that $A$ is 
+    almost decisive for $(x,y)$, and fix an arbitrary $g \in \mc{F}$ such that
+    \begin{itemize}
+      \item for all $a \in A$, $x <_{g(a)} y$; and
+      \item for all $a \in A^c$, $y <_{g(a)} x$.
+    \end{itemize}
+    We must show that $x <_{\sigma(g)} y$.   
+    
+    By the definition of almost decisive, we can find an $f \in \mc{F}$ such that
+    \begin{itemize}
+      \item for all $a \in A$, $x <_{f(a)} y$;
+      \item for all $a \in A^c$, $y <_{f(a)} x$;
+      \item $x <_{\sigma(f)} y$.
+    \end{itemize}
+    Note that $f$ and $g$ agree on $\{x,y\}$: in both functions, everybody in $A$ prefers 
+    $y$ over $x$ and everybody in $A^c$ prefers $x$ over $y$. Thus, by independence and 
+    the fact that $x <_{\sigma(f)} y$, we have $x <_{\sigma(g)} y$, as desired.
+  \end{proof}
+  
+  We now introduce a natural strengthening of being almost decisive:
+  
+  \begin{definition}
+    Suppose that $A \subseteq \mc{V}$ and $x,y$ are distinct elements of $\mc{X}$. We say 
+    that $A$ is \emph{decisive} if, for every $f \in \mc{F}$ such that 
+    \[
+      \forall a \in A \ x <_{f(a)} y,
+    \]
+    we have $x <_{\sigma(f)} y$.
+  \end{definition}  
+  
+  In other words, $A$ is decisive for $(x,y)$ if, whenever everyone in $A$ prefers 
+  $y$ over $x$, society also prefers $y$ over $x$. In light of Lemma \ref{lemma: almost decisive}, 
+  the difference between being decisive for $(x,y)$ and being almost decisive for $(x,y)$ is 
+  that, in the definition of being decisive, it doesn't matter what the preferences of 
+  individuals in $A^c$ are. However, in the presence of Unanimity and Independence, the two notions 
+  are the same:
+  
+  \begin{lemma}
+    Suppose that $A \subseteq \mc{V}$ and $x,y$ are distinct elements of $\mc{X}$. The 
+    following are equivalent:
+    \begin{enumerate}
+      \item $A$ is almost decisive for $(x,y)$;
+      \item $A$ is decisive for $(x,y)$.
+    \end{enumerate}
+  \end{lemma}
+  
+  \begin{proof}
+     Property (2) implies property (1) by definition, so it suffices to prove that (1) implies (2). 
+     To this end, suppose that $A$ is almost decisive for $(x,y)$. To show that $A$ is decisive 
+     for $(x,y)$, fix an $f \in \mc{F}$ such that $x <_{f(a)} y$ for all $a \in A$. We must show 
+     that $x <_{\sigma(f)} y$.
+     
+     Since $|\mc{X}| > 2$, we can fix an alternative $z \in \mc{X}$ such that $z \notin \{x,y\}$. 
+     Let $g \in \mc{F}$ be a social preference function such that:
+     \begin{itemize}
+       \item for all $a \in A$, we have $x <_{g(a)} y <_{g(a)} z$; and
+       \item for all $a \in A^c$, we have $y <_{g(a)} z <_{g(a)} x$.
+     \end{itemize}
+     Since $A$ is almost decisive for $(x,y)$, Lemma \ref{lemma: almost decisive} implies that 
+     $x <_{\sigma(g)} y$. Also, since $\sigma$ satisfies Unanimity and $y <_{g(a)} z$ for all 
+     $a \in \mc{V}$, we have $y <_{\sigma(g)} z$. Putting these together yields 
+     $x <_{\sigma(g)} z$.
+     
+     Now return to the function $f$. We know that $x <_{f(a)} y$ for all $a \in A$, but we do not 
+     know the preferences on $A^c$. Let $B_0 = \{a \in A^c \mid y <_{f(a)} x\}$ and 
+     $B_1 = \{a \in A^c \mid x <_{f(a)} y\}$. Let $h \in \mc{F}$ be a social preference function 
+     such that
+     \begin{itemize}
+       \item for all $a \in A$, we have $x <_{h(a)} z <_{h(a)} y$;
+       \item for all $a \in B_0$, we have $z <_{h(a)} y <_{h(a)} x$; and
+       \item for all $a \in B_1$, we have $z <_{h(a)} x <_{h(a)} y$.
+     \end{itemize}
+     Now make the following observations:
+     \begin{enumerate}
+       \item $h$ agrees with $g$ on $\{x,z\}$, and therefore, by Independence, we have 
+       $x <_{\sigma(h)} z$;
+       \item $z <_{h(a)} y$ for all $a \in \mc{V}$, so, by Unanimity, we have $z <_{\sigma(h)} y$;
+       \item by (1) and (2), we have $x <_{\sigma(h)} y$;
+       \item $f$ agrees with $h$ on $\{x,y\}$, so, again by Independence, 
+       $x <_{\sigma(f)} y$, as desired.
+     \end{enumerate}
+  \end{proof}    
+  
+  Finally, we show that if a set is decisive for a single pair $(x,y)$, then it is decisive 
+  for \emph{all} pairs $(x,y)$.
+  
+  \begin{lemma}
+    Suppose that $A \subseteq \mc{V}$. The following are equivalent:
+    \begin{enumerate}
+      \item there are distinct $x,y \in \mc{X}$ such that $A$ is decisive for $(x,y)$;
+      \item for \emph{every} pair of distinct $x,y \in \mc{X}$, $A$ is decisive for $(x,y)$.
+    \end{enumerate}
+  \end{lemma}
+  
+  \begin{proof}
+    Again, (2) implies (1) by definition, so it suffices to prove that (1) implies (2). 
+    Assume that (1) holds, and fix distinct $x,y \in \mc{X}$ such that $A$ is decisive 
+    for $(x,y)$. To prove (2), fix an arbitrary pair $u,w$ of distinct elements of $\mc{X}$. 
+    We must show that $A$ is decisive for $(u,w)$. To show this, suppose that 
+    $f \in \mc{F}$ is such that $u <_{f(a)} w$ for all $a \in A$. We must show that 
+    $u <_{\sigma(f)} w$.
+    
+    For simplicity, assume that $\{u,w\} \cap \{x,y\} = \emptyset$, i.e., neither $u$ nor 
+    $w$ is equal to either $x$ or $y$. The argument in which one or both of $u$ and $w$ 
+    is in $\{x,y\}$ is similar and left as an exercise. 
+    
+    Let $B_0 = \{a \in A^c \mid w <_{f(a)} u\}$ and $B_1 = \{a \in A^c \mid u <_{f(a)} w\}$. 
+    Let $g \in \mc{F}$ be such that 
+    \begin{itemize}
+      \item for all $a \in A$, we have $u <_{g(a)} x <_{g(a)} y <_{g(a)} w$;
+      \item for all $a \in B_0$, we have $y <_{g(a)} w <_{g(a)} u <_{g(a)} x$;
+      \item for all $a \in B_1$, we have $u <_{g(a)} x <_{g(a)} y <_{g(a)} w$.
+    \end{itemize}
+    Since $A$ is decisive for $(x,y)$ and $x <_{g(a)} y$ for all $a \in A$, we have 
+    $x <_{\sigma(g)} y$. By Unanimity, we have $u <_{\sigma(g)} x$ and $y <_{\sigma(g)} w$. 
+    Putting this together yields $u <_{\sigma(g)} w$. But $f$ agrees with $g$ on $\{u,w\}$, 
+    so $u <_{\sigma(f)} w$, as desired.
+  \end{proof}
+  
+  Let us simply say that a set $A \subseteq \mc{V}$ is \emph{decisive} if, for every pair of 
+  distinct $x,y \in \mc{X}$, $A$ is decisive for $(x,y)$. By the previous Lemmas, $A$ is 
+  decisive if and only if there are distinct $x,y \in \mc{X}$ such that $A$ is almost decisive 
+  for $(x,y)$.
+  
+  \begin{lemma}
+    Let $\mc{U} = \{A \subseteq \mc{V} \mid A \text{ is decisive}\}$. Then $\mc{U}$ is an ultrafilter 
+    over $\mc{V}$.
+  \end{lemma}
+  
+  \begin{proof}
+    Since $\sigma$ satisfies Unanimity, we have $\mc{V} \in \mc{U}$ and $\emptyset \notin \mc{U}$. 
+    The following exercise shows that $\mc{U}$ is closed upwards:
+    
+    \begin{exercise}
+      Suppose that $A \subseteq B \subseteq \mc{V}$ and $A$ is decisive. Then $B$ is decisive.
+    \end{exercise}
+    
+    We next need to show that $\mc{U}$ is closed under intersection. To this end, suppose that 
+    both $A$ and $B$ are decisive. We must show that $A \cap B$ is decisive. By the previous 
+    lemmas, this is equivalent to showing that $A \cap B$ is almost $(x,y)$ decisive for 
+    some pair of distinct $x,y \in \mc{X}$. Fix arbitrary distinct $x,y \in \mc{X}$. To show 
+    that $A \cap B$ is almost $(x,y)$ decisive, we must find a function $f \in \mc{F}$ such that
+    \begin{enumerate}
+      \item for all $a \in A \cap B$, we have $x <_{f(a)} y$;
+      \item for all $a \in (A \cap B)^c$, we have $y <_{f(a)} x$;
+      \item $x <_{\sigma(f)} y$.
+    \end{enumerate}
+    Fix $z \in \mc{X}$ with $z \notin \{x,y\}$. Let $f \in \mc{F}$ be such that
+    \begin{itemize}
+      \item for all $a \in A \cap B$, we have $x <_{f(a)} z <_{f(a)} y$;
+      \item for all $a \in A \setminus B$, we have $y <_{f(a)} x <_{f(a)} z$;
+      \item for all $a \in B \setminus A$, we have $z <_{f(a)} y <_{f(a)} x$;
+      \item for all $a \in (A \cup B)^c$, we have $y < _{f(a)} z <_{f(a)} x$.
+    \end{itemize}
+    Note that $f$ satisfies requirements (1) and (2) above. We must show that $x <_{\sigma(f)} y$.
+    First note that, for all $a \in A$, we have $x <_{f(a)} z$. Since $A$ is decisive, this 
+    implies that $x <_{\sigma(f)} z$. Next note that, for all $a \in B$, we have $z <_{f(a)} y$. 
+    Since $B$ is decisive, this implies that $z <_{\sigma(f)} y$. Putting these two together 
+    yields $x <_{\sigma(f)} y$, as desired.
+  
+    Finally, we need to show that, for all $A \subseteq \mc{V}$, either $A \in \mc{U}$ or $A^c \in \mc{U}$. 
+    To this end, let $A \subseteq \mc{V}$ be arbitrary. Fix distinct $x,y \in \mc{X}$, and let 
+    $f \in \mc{F}$ be such that
+    \begin{itemize}
+      \item for all $a \in A$, $x <_{f(a)} y$;
+      \item for all $a \in A^c$, $y <_{f(a)} x$.
+    \end{itemize}
+    Now ask what the societal preference between $x$ and $y$ is given the social preference function 
+    $f$. If $x <_{\sigma(f)} y$, then $A$ is almost decisive for $(x,y)$, and hence $A \in \mc{U}$. 
+    If $y <_{\sigma(f)} x$, then $A^c$ is almost decisive for $(y,x)$, and hence $A^c \in \mc{U}$.
+  \end{proof}
+  
+  The final step is now almost immediate:
+  \begin{lemma}
+    $\sigma = \sigma_{\mc{U}}$.
+  \end{lemma}
+  
+  \begin{proof}
+    We must show that, for all $f \in \mc{F}$ and all distinct $x,y \in \mc{X}$, we have
+    \[
+      (x <_{\sigma(f)} y) \Longleftrightarrow (\{a \in \mc{V} \mid x <_{f(a)} y\} \in \mc{U}).
+    \]
+    Fix such $f \in \mc{F}$ and $x,y \in \mc{X}$. Suppose first that $x <_{\sigma(f)} y$. 
+    By definition, $\{a \in \mc{V} \mid x <_{f(a)} y\}$ is almost decisive for $(x,y)$, and 
+    hence is in $\mc{U}$, thus proving the left-to-right direction.
+    
+    For the other direction, suppose that $A = \{a \in \mc{V} \mid x <_{f(a)} y\} \in \mc{U}$. 
+    By the definition of $\mc{U}$, this means that $A$ is decisive. By the definition of 
+    decisive, this means that $x <_{\sigma(f)} y$.
+  \end{proof}
+\end{proof}
+
+Notice that if $\mc{U}$ is an ultrafilter, then not only is $\mc{U}$ closed under pairwise 
+intersection, but it is closed under \emph{finite} intersections, i.e., if 
+$n \in \bb{N}$ and $A_0, A_1, \ldots, A_n \in \mc{U}$, then 
+$A_0 \cap A_1 \cap \ldots \cap A_n \in \mc{U}$. This allows us the following strengthening of 
+Theorem \ref{thm: generalized_arrow}.
+
+\begin{corollary}
+  Suppose that $\mc{V}$ is a nonempty set of individuals and $\mc{X}$ is a finite set of 
+  alternatives with at least 3 elements. If $\sigma$ is a voting system that satisfies 
+  Unanimity and Independence, then there is an ultrafilter $\mc{U}$ over $\mc{V}$ 
+  such that, for all $f \in \mc{F}$, we have
+  \[
+    \{a \in \mc{V} \mid f(a) = \sigma(f)\} \in \mc{U}.
+  \]
+  In other words, the societal preferences are simply formed by copying the individual preferences 
+  of a group of individuals that is in $\mc{U}$.
+\end{corollary}
+
+\begin{proof}
+  Apply Theorem \ref{thm: generalized_arrow} to find an ultrafilter $\mc{U}$ over 
+  $\mc{V}$ such that $\sigma = \sigma_{\mc{U}}$. Now fix an arbitrary $f \in \mc{F}$. 
+  For all distinct $x,y \in \mc{X}$, let $A_{x,y}$ be the set of $a \in \mc{V}$ such 
+  that the preferences of $a$ between $x$ and $y$ agree with the societal preferences, i.e., 
+  \[
+    A_{x,y} = \{a \in \mc{V} \mid (x <_{f(a)} y) \Leftrightarrow (x <_{\sigma(f)} y)\}.
+  \]
+  Since $\sigma = \sigma_{\mc{U}}$, we have $A_{x,y} \in \mc{U}$. Since $\mc{X}$ is finite, 
+  there are only finitely many pairs of distinct $x,y \in \mc{X}$. Thus, the set
+  \[
+    A = \bigcup_{x \neq y \in \mc{X}} A_{x,y}
+  \]
+   is in $\mc{U}$. But now one can check that, for all $a \in A$, we have 
+   $f(a) = \sigma(f)$.
+\end{proof}
+
+\begin{remark}
+  Although models of voters or economic actors with infinitely many individuals or alternatives may 
+  not seem realistic, there are cases in which such models may be the best or most useful 
+  models for studying actual large economic systems. For instance, in Aumann's paper ``Markets 
+  with a continuum of traders", he argues that the most natural mathematical model for a market with 
+  true ``perfect competition" is one in which the number of economic actors equals the cardinality 
+  of the set of real numbers.
+  
+  What the results of this section show us, though, is that there is a limit to the usefulness of 
+  studying voting systems with infinitely many actors. One might have hoped that, by moving from 
+  finite voting systems to infinite ones, one might be able to avoid the paradoxes of Condorcet 
+  and Arrow, but the results of this lecture show that this is not the case.
+\end{remark}
+
 \end{document}
