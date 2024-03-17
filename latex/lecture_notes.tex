@@ -1983,7 +1983,7 @@ in which the set of individuals and the set of alternatives are allowed to be in
   
   \begin{definition}
     Suppose that $A \subseteq \mc{V}$ and $x,y$ are distinct elements of $\mc{X}$. We say 
-    that $A$ is \emph{decisive} if, for every $f \in \mc{F}$ such that 
+    that $A$ is \emph{decisive for $(x,y)$} if, for every $f \in \mc{F}$ such that 
     \[
       \forall a \in A \ x <_{f(a)} y,
     \]
@@ -2200,5 +2200,606 @@ Theorem \ref{thm: generalized_arrow}.
   finite voting systems to infinite ones, one might be able to avoid the paradoxes of Condorcet 
   and Arrow, but the results of this lecture show that this is not the case.
 \end{remark}
+
+\chapter{Lecture 5: Ultraproducts}
+
+In this lecture, we introduce a powerful technique for creating new models out of old models: 
+the ultraproduct construction. In a very rough sense, this construction works as follows: one 
+starts with an indexed family $\langle \mathfrak{A}_i \mid i \in I \rangle$ of models, and then one uses 
+an ultrafilter over $I$ to create a new model $\mathfrak{A}$ by \emph{averaging} the models in 
+$\langle \mathfrak{A}_i \mid i \in I \rangle$. Let us now describe the construction more formally.
+
+For now, fix a first-order language $\mc{L}$. The language $\mc{L}$ consists of relation 
+symbols, function symbols, and constant symbols. Let $\mc{R}$ denote the set of relation 
+symbols in $\mc{L}$, $\mc{F}$ denote the set of function symbols in $\mc{L}$, and 
+$\mc{C}$ denote the set of constant symbols in $\mc{L}$. 
+
+Also fix for now an index set $I$ and, for each $i \in I$, an $\mc{L}$-model $\mathfrak{A}_i$.
+For each $i \in I$, let $A_i$ denote the underlying set of $\mathfrak{A}_i$. 
+For each $i \in I$, each $R \in \mc{R}$, each $F \in \mc{F}$, and each $c \in \mc{C}$, 
+let $R_i$, $F_i$, and $c_i$ denote the interpretations of $R$, $F$, and $c$, respectively, 
+in the model $\mathfrak{A}_i$. Recall that 
+\[
+  \prod_{i \in I} A_i
+\]
+denotes the set of all functions $f$ such that $\dom(f) = I$ and, for all $i \in I$, we have 
+$f(i) \in A_i$.
+
+Finally, fix an ultrafilter $U$ over $I$.
+
+\begin{definition}
+  For all $f,g \in \prod_{i \in I} A_i$, we say that $f =_U g$ if
+  \[
+    \{i \in I \mid f(i) = g(i)\} \in U.
+  \]
+\end{definition}
+
+\begin{proposition}
+  The relation $=_U$ is an equivalence relation on $\prod_{i \in I} A_i$.
+\end{proposition}
+
+\begin{proof}
+  We must check that $=_U$ is reflexive, symmetric, and transitive. First, for all $f \in 
+  \prod_{i \in I} A_i$, we have $\{i \in I \mid f(i) = f(i)\} = I \in U$, so $=_U$ is 
+  reflexive. 
+  
+  To check that $=_U$ is symmetric, fix $f,g \in \prod_{i \in I} A_i$. Then 
+  \[
+    \{i \in I \mid f(i) = g(i)\} = \{i \in I \mid g(i) = f(i)\}
+  \]
+  and thus, if $f =_U g$, then also $g =_U f$.
+  
+  Finally, to check transitivity, fix $f,g,h \in \prod_{i \in I} A_i$, and suppose that 
+  $f =_U g$ and $g =_U h$. Let 
+  \[
+    X_0 = \{i \in I \mid f(i) = g(i)\} \ \ \ \text{ and } \ \ \ X_1 = \{i \in I \mid g(i) = h(i)\}.
+  \]
+  By the definition of $=_U$, we have $X_0, X_1 \in U$. Therefore, since $U$ is an ultrafilter, 
+  we have $X_0 \cap X_1 \in U$. 
+  For all $i \in X_0 \cap X_1$, we have $f(i) = g(i)$ and $g(i) = h(i)$, so $f(i) = h(i)$. 
+  Therefore, 
+  \[
+    X_0 \cap X_1 \subseteq \{i \in I \mid f(i) = h(i)\}.
+  \]
+  Since $U$ is an ultrafilter and $X_0 \cap X_1 \in U$, it follows that $\{i \in I \mid 
+  f(i) = h(i)\} \in U$, i.e., $f =_U h$.
+\end{proof}
+
+Given a function $f \in \prod_{i \in I} A_i$, let $[f]_U$ denote the equivalence class of 
+$f$ under the equivalence relation $=_U$. In other words, 
+\[
+  [f]_U = \left\{g \in \prod_{i \in I} A_i \ \middle| \ f =_U g\right\}.
+\]
+
+We can now describe the ultraproduct construction.
+
+\begin{definition} \label{def: ultraproduct}
+  Given $\langle \mathfrak{A}_i \mid i \in I \rangle$ and $U$ as above, the ultraproduct 
+  $\prod_{i \in I} \mathfrak{A}_i / U$ (sometimes denoted $\prod_U \mathfrak{A}_i$ 
+  or $\mathfrak{A}_I/U$) is 
+  defined as follows:
+  \begin{enumerate}
+    \item The underlying set of $\prod_{i \in I} \mathfrak{A}_i /U$ is
+    \[
+      \prod_{i \in I} A_i /U = \left\{ [f]_U \ \middle| \ f \in \prod_{i \in I} A_i \right\}.
+    \]
+    \item Given $R \in \mc{R}$, $F \in \mc{F}$, or $c \in \mc{C}$, we will let their interpretations 
+    in $\prod_{i \in I} \mathfrak{A}_i / U$ be denoted by 
+    $R_U$, $F_U$, and $c_U$, 
+    respectively. These are defined as follows:
+    \begin{enumerate}
+      \item If $n \in \bb{N}$, $R \in \mc{R}$ is an $n$-ary relation symbol, and 
+      $[f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U \in \prod_{i \in I} A_i /U$, then we set
+      \[
+        ([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U) \in R_U \Longleftrightarrow 
+        \{i \in I \mid (f_0(i), f_1(i), \ldots, f_{n-1}(i)) \in R_i \} \in U.
+      \]
+      \item If $n \in \bb{N}$, $F \in \mc{F}$ is an $n$-ary function symbol, and 
+      $[f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U \in \prod_{i \in I} A_i /U$, then we let 
+      \[
+        F([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U) = [g],
+      \]
+      where $g \in \prod_{i \in I} A_i$ is defined by letting 
+      \[
+        g(i) = F(f_0(i), f_1(i), \ldots, f_{n-1}(i))
+      \]
+      for all $i \in I$.
+      \item If $c \in \mc{C}$ is a constant symbol, then we let $c_U = [f_c]_U$, 
+      where $f_c \in \prod_{i \in I} A_i$ is defined by letting 
+      \[
+        f_c(i) = c_i
+      \]
+      for all $i \in I$.
+    \end{enumerate}
+  \end{enumerate}
+\end{definition}
+
+There are some things that should be verified for the above construction to make sense.
+
+\begin{exercise}
+  Prove that the constructions in items (2)(a) and (2)(b) of Definition \ref{def: ultraproduct} is 
+  well-defined, i.e., that it does not depend on the choice of representatives from the relevant 
+  equivalence classes. More precisely, first suppose that $n \in \bb{N}$ and 
+  $f_0, f_1, \ldots, f_{n-1}, g_0, g_1, \ldots, g_{n-1} \in \prod_{i \in I} A_i$ are such that 
+  $f_i =_U g_i$ for all $i \in I$. Now prove the following:
+  \begin{enumerate}
+    \item If $R \in \mc{R}$ is an $n$-ary relation symbol, then we have 
+    \[
+      \{ i \in I \mid (f_0(i), f_1(i), \ldots, f_{n-1}(i)) \in R_i\} \in U
+    \]
+    if and only if
+    \[
+      \{i \in I \mid (g_0(i), g_1(i), \ldots, g_{n-1}(i)) \in R_i\} \in U.
+    \]
+    \item If $F \in \mc{F}$ is an $n$-ary function symbol and we define $f^*, g^* \in \prod_{i \in I} 
+    A_i$, by letting 
+    \[
+      f^*(i) = F(f_0(i), f_1(i), \ldots, f_{n-1}(i))
+    \]
+    and 
+    \[
+      g^*(i) = F(g_0(i), g_1(i), \ldots, g_{n-1}(i))
+    \]
+    for all $i \in I$, then we have $f^* =_U g^*$.
+  \end{enumerate}
+\end{exercise}
+
+\begin{remark}
+Although we did not use the terminology, we actually saw an example of the ultraproduct in 
+the previous lecture. Recall the setup: we were given a set $\mc{V}$ of individuals and a set 
+$\mc{X}$ of individuals that they are choosing between. Each individual has a ranking of 
+the alternatives in $\mc{X}$; formally, this is a linear order on $\mc{X}$. For each 
+$a \in \mc{V}$, let $<_a$ denote this order. We saw that one way to combine all of these 
+individual preferences into a societal preference $<^*$ is as follows: fix an ultrafilter 
+$U$ over $\mc{V}$ and, for all alternatives $x,y \in \mc{X}$, set 
+\[
+  x <^* y \Longleftrightarrow \{a \in \mc{V} \mid x <_a y\} \in U.
+\]
+Note that this is precisely the voting system $\sigma_U$ identified in the previous chapter. 
+Moreover, by looking at Definition \ref{def: ultraproduct}, we can see that this corresponds 
+precisely to taking the ultraproduct of the structures $\langle <_a \mid a \in \mc{V} \rangle$ 
+by the ultrafilter $U$ (the language here just has a single binary relation, denoted $<$).
+\end{remark}
+
+\section{\L os' Theorem}
+
+We now present the fundamental theorem of ultraproducts, known as \L os' Theorem. Roughly speaking, 
+this says that the truth of formulas in an ultraproduct reflects the truth of the corresponding 
+formulas in the factors of the ultraproduct.
+
+\begin{theorem} \label{thm: los}
+  Suppose that $\mc{L}$ is a first-order language, $I$ is a nonempty set, $\langle \mathfrak{A}_i 
+  \mid i \in I \rangle$ is a family of $\mc{L}$-structures, and $U$ is an ultrafilter over 
+  $I$. Then, for every $\mc{L}$-formula $\varphi$ with $n$ free variables and every 
+  $n$-tuple $([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U)$ from $\prod_{i \in I} A_i /U$, 
+  the following are equivalent:
+  \begin{enumerate}
+    \item $\prod_{i \in I} \mathfrak{A}_i/U \models \varphi([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U)$;
+    \item $\{i \in I \mid \mathfrak{A}_i \models \varphi(f_0(i), f_1(i), \ldots, f_{n-1}(i))\} \in U$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  The proof is by induction on the complexity of formulas. If $\varphi$ is an atomic formula, 
+  then the equivalence of (1) and (2) follows directly from Definition \ref{def: ultraproduct} 
+  (Exercise: check this!).
+  
+  Suppose now that $\varphi = \psi_0 \wedge \psi_1$ and we have established the theorem for 
+  $\psi_0$ and $\psi_1$. Then we have 
+  \begin{align*}
+    \prod_{i \in I} \mathfrak{A}_i/U & \models \varphi([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U) \\ 
+     \Longleftrightarrow &  \prod_{i \in I} \mathfrak{A}_i/U \models \psi_0([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U) \text{ and } \\ 
+     &  \prod_{i \in I} \mathfrak{A}_i/U \models \psi_1([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U) \\ 
+     \Longleftrightarrow & \{i \in I \mid \mathfrak{A}_i \models \psi_0(f_0(i), f_1(i), \ldots, f_{n-1}(i))\} \in U \text{ and } \\
+     & \{i \in I \mid \mathfrak{A}_i \models \psi_1(f_0(i), f_1(i), \ldots, f_{n-1}(i))\} \in U \\ 
+     \Longleftrightarrow & \{i \in I \mid \mathfrak{A}_i \models \varphi(f_0(i), f_1(i), \ldots, f_{n-1}(i))\} \in U.
+  \end{align*}
+  The first equivalence in the string above follows from the definition of $\wedge$, the second 
+  follows from the induction hypothesis, and third follows from the definition of $\wedge$ together 
+  with the fact that $U$ is a filter.
+  
+  Next, suppose that $\varphi = \neg \psi$ and we have established the theorem for $\psi$. Then 
+  we have 
+  \begin{align*}
+    \prod_{i \in I} \mathfrak{A}_i/U & \models \varphi([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U) \\ 
+     \Longleftrightarrow & \prod_{i \in I} \mathfrak{A}_i/U \not\models \psi[f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U) \\
+     \Longleftrightarrow & \{i \in I \mid \mathfrak{A}_i \models \psi(f_0(i), f_1(i), \ldots, 
+     f_{n-1}(i))\} \notin U \\ 
+     \Longleftrightarrow & \{i \in I \mid \mathfrak{A}_i \models \varphi(f_0(i), f_1(i), \ldots, 
+     f_{n-1}(i))\} \in U.
+  \end{align*}
+  The first equivalence in the string above follows from the definition of $\neg$, the second 
+  follows from the induction hypothesis, and the third follows from the definition of $\neg$ together 
+  with the fact that $U$ is an ultrafilter and therefore, if a subset of $I$ is not in $U$, then 
+  its complement \emph{is} in $U$.
+  
+  Finally, suppose that $\varphi(x_0, \ldots, x_{n-1}) = \exists y \psi(x_0, \ldots, x_{n-1};y)$ 
+  and we have established the theorem for $\psi$. Let us prove that (1) implies (2). Thus, suppose that
+  \[
+    \prod_{i \in I} \mathfrak{A}_i/U \models \varphi([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U).
+  \]
+  Since $\varphi = \exists y \psi$, this means that there is $[g]_U \in \prod_{i \in I} A_i/U$ such that
+  \[
+    \prod_{i \in I} \mathfrak{A}_i/U \models \psi([f_0]_U, [f_1]_U, \ldots, [f_{n-1}]_U; [g]_U).
+  \]
+  By the induction hypothesis, this implies that the set 
+  \[
+    J = \{i \in I \mid \mathfrak{A}_i \models \psi(f_0(i), f_1(i), \ldots, f_{n-1}(i); g(i))\}
+  \]
+  is in $U$. But then, for all $i \in J$, we have
+  \[
+    \mathfrak{A}_i \models \exists y \psi(f_0(i), f_1(i), \ldots, f_{n-1}(i), y),
+  \]
+  as witnessed by $y = g(i)$. Since $\varphi = \exists y \psi$, and since $J \in U$, this means that 
+  \[
+    J \subseteq \{i \in I \mid \mathfrak{A}_i \models \varphi(f_0(i), f_1(i), \ldots, f_{n-1}(i))\} 
+    \in U, 
+  \]
+  as desired. The proof that (2) implies (1) is essentially obtained by reversing this argument and 
+  is left as an exercise.
+  
+  Since the logical connectives $\vee$ and $\forall$ can be expressed in terms of $\wedge$, $\neg$, and 
+  $\exists$, this completes the proof of the theorem.
+\end{proof}
+
+\begin{exercise}
+  Complete the proof of Theorem \ref{thm: los} by proving that (2) implies (1) in the case in which 
+  $\varphi(x_0, \ldots, x_{n-1}) = \exists y \psi(x_0, \ldots, x_{n-1};y)$ 
+  and we have established the theorem for $\psi$.
+\end{exercise}
+
+\L os' Theorem has the following immediate corollary.
+
+\begin{corollary} \label{cor: los}
+  Suppose that $\mc{L}$ is a first-order language, $T$ is a theory in the language $\mc{L}$, 
+  $I$ is a nonempty set, $U$ is an ultrafilter over $I$ and, for all $i \in I$, we are given 
+  an $\mc{L}$-structure $\mathfrak{A}_i$ such that $\mathfrak{A}_i \models T$. 
+  Then $\prod_{i \in I} \mathfrak{A}_i /U \models T$.
+\end{corollary}
+
+\begin{proof}
+  $T$ is a collection of sentences in $\mc{L}$ with no free variables. Therefore, for each 
+  $\varphi \in T$, by Theorem \ref{thm: los}, we have 
+  \begin{align*}
+    \prod_{i \in I} \mathfrak{A}_i /U \models \varphi \Longleftrightarrow 
+    \{i \in I \mid \mathfrak{A}_i \models \varphi\} \in U.
+  \end{align*}
+  But for each $i \in I$, we have $\mathfrak{A}_i \models T$, and hence 
+  $\mathfrak{A}_i \models \varphi$. Thus, 
+  \[
+    \{i \in I \mid \mathfrak{A}_i \models \varphi\} = I \in U, 
+  \]
+  and hence $\prod_{i \in I} \mathfrak{A}_i /U \models \varphi$.
+\end{proof}
+
+\section{Ultrapowers}
+
+An important special case of the ultraproduct construction is that in which all of the 
+structures $\mathfrak{A}_i$ for $i \in I$ are the \emph{same}. In this case, the ultraproduct 
+is more commonly called an \emph{ultrapower}.
+
+\begin{definition}
+  Suppose that $\mc{L}$ is a first-order language, $I$ is a nonempty set, $U$ is an ultrafilter 
+  over $I$, and $\mathfrak{A}$ is an $\mc{L}$-structure. Then the \emph{ultrapower of $\mathfrak{A}$ 
+  by $U$}, often denoted $\prod_U \mathfrak{A}$, is defined to be the ultraproduct
+  \[
+    \prod_{i \in I} \mathfrak{A}_i / U,
+  \]
+  where, for each $i \in I$, we have $\mathfrak{A}_i = \mathfrak{A}$.
+\end{definition}
+
+Recall that two $\mc{L}$-structures $\mathfrak{A}$ and $\mathfrak{B}$ are said to be 
+\emph{elementarily equivalent}, denoted $\mathfrak{A} \equiv \mathfrak{B}$, if they satisfy the same 
+$\mc{L}$-sentences, i.e., for every sentence $\varphi \in \mc{L}$, we have
+\[
+  \mathfrak{A} \models \varphi \Leftrightarrow \mathfrak{B} \models \varphi.
+\]
+
+\begin{exercise} \label{exercise: el_eq}
+  Suppose that $\mc{L}$ is a first-order language, $I$ is a nonempty set, $U$ is an ultrafilter 
+  over $I$, and $\mathfrak{A}$ is an $\mc{L}$-structure. Prove that $\mathfrak{A}$ and  
+  $\prod_U \mathfrak{A}$ are elementarily equivalent. (Hint: Use Corollary \ref{cor: los}.)
+\end{exercise}
+
+If $\mathfrak{A}$ is an $\mc{L}$-structure, with underlying set $A$, and $U$ is an ultrafilter 
+over some index set $I$, 
+then there is a natural embedding of $\mathfrak{A}$ into the ultrapower $\prod_U \mathfrak{A}$. 
+This embedding is denoted $j_U : A \ra \prod_U A$, and is defined as follows: For all 
+$a \in A$, let $f_a : I \ra A$ be the constant map taking value $a$, i.e., $f_a(i) = a$ for 
+all $i \in I$. Then set $j_U(a) = [a]_U$.
+
+\begin{exercise}
+  Suppose that $\mc{L}$ is a first-order language, $\mathfrak{A}$ is an $\mc{L}$-structure, 
+  $I$ is a nonempty set, and $U$ is an ultrafilter over $I$. Prove that the ultrapower embedding 
+  $j_U : A \ra \prod_U A$ as defined above is an \emph{elementary embedding}. In other words, 
+  prove that, for every $\mc{L}$-formula $\varphi$ with $n$ free variables, and for all 
+  $n$-tuples $(a_0, a_1, \ldots, a_{n-1})$ of elements of $A$, we have 
+  \[
+    \mathfrak{A} \models \varphi(a_0, a_1, \ldots, a_{n-1}) \Longleftrightarrow 
+    \prod_U \mathfrak{A} \models \varphi(j_U(a_0), j_U(a_1), \ldots, j_U(a_{n-1})).
+  \]
+  (Hint: Apply \L os' Theorem.)
+\end{exercise}
+
+\section{Nonstandard numbers}
+
+One typical use of the ultraproduct construction is to produce ``nonstandard" versions of 
+certain standard mathematical structures. This can be used to prove, for instance, that certain 
+properties that these standard mathematical structures possess cannot be expressed in a 
+first-order way. They way this argument goes is as follows: One fixes a first order language 
+$\mc{L}$ and an $\mc{L}$-structure $\mathfrak{A}$ such that $\mathfrak{A}$ satisfies a certain property 
+$P$. One then takes an ultrapower $\prod_U \mathfrak{A}$ and proves that this ultrapower 
+does \emph{not} satisfy property $P$. Since, by Exercise \ref{exercise: el_eq}, 
+$\mathfrak{A}$ and $\prod_U \mathfrak{A}$ are elementarily equivalent, they satisfy the same 
+first-order sentences. Since $P$ is satisfies by $\mathfrak{A}$ but not by 
+$\prod_U \mathfrak{A}$, this shows that $P$ cannot be expressed by a first-order sentence in 
+the language $\mc{L}$.
+
+\subsection{Nonstandard natural numbers}
+
+Let $\mc{L} = \{+, \cdot, <, 0\}$, where $+$ and $\cdot$ are binary function symbols, $<$ is a binary 
+relation symbol, and $0$ is a constant symbol. Let $\mathfrak{A} = (\bb{N}, +_{\bb{N}}, \cdot_{\bb{N}}, 
+<_{\bb{N}}, 0_{\bb{N}})$, where
+\begin{itemize}
+  \item $\bb{N}$ is the usual set of natural numbers;
+  \item $+_{\bb{N}}$ and $\cdot_{\bb{N}}$ are the usual operations of addition and multiplication, 
+  respectively, on $\bb{N}$;
+  \item $<_{\bb{N}}$ is the usual ordering of $\bb{N}$;
+  \item $0_{\bb{N}}$ is the natural number $0$.
+\end{itemize}
+
+Now let $U$ be a nonprincipal ultrafilter over $\omega$ (we use $\omega$ here instead of $\bb{N}$ 
+simply to distinguish it from the underlying set of $\mathfrak{A}$). Consider the ultrapower 
+$\prod_U \mathfrak{A}$ and the resulting ultrapower map $j_U : \bb{N} \ra \prod_U \bb{N}$.
+For each $n \in \bb{N}$, let $f_n:\omega \ra \bb{N}$ be the constant function taking value 
+$n$. By the definition of $j_U$, we have $j_U(n) = [f_n]_U$ for all $n \in \bb{N}$.
+Let us prove a few basic facts about this ultrapower. For the first observation, we will need 
+following basic fact about ultrafilters, which we leave as an exercise.
+
+\begin{exercise} \label{exercise: uf_partition}
+  Suppose that $U$ is an ultrafilter over a set $I$. Then, for every natural number $n$, every 
+  set $X \in U$, and every partition $X = X_0 \cup X_1 \cup \ldots \cup X_{n-1}$ of $X$ into 
+  $n$ pieces, there is $m < n$ such that $X_m \in U$. (Hint: Prove this by induction on $n$.)
+\end{exercise}
+
+\begin{proposition}
+  $j_U$ maps $\bb{N}$ onto an initial segment of $\prod_U \bb{N}$. 
+\end{proposition}
+
+\begin{proof}
+  It suffices to show that, for all $n \in \bb{N}$ and every $f : \omega \ra \bb{N}$ such 
+  that 
+  \[
+    \prod_U \mathfrak{A} \models [f]_U < [f_n]_U,
+  \]
+  there is $m < n$ such that $f =_U f_m$. To this end, fix such an $n$ and $f$. 
+  Let 
+  \[
+    X = \{i < \omega \mid f(i) < f_n(i) = n\}.
+  \]
+  By \L os' Theorem and the fact that $\prod_U \mathfrak{A} \models [f]_U < [f_n]_U$, 
+  we must have $X \in U$. Now, for all $m < n$, let 
+  \[
+    X_m = \{i \in X \mid f(i) = m\}.
+  \]
+  Then $X = X_0 \cup X_1 \cup \ldots \cup X_{n-1}$ is a partition of $X$, so, by Exercise 
+  \ref{exercise: uf_partition}, there is $m < n$ such that $X_m \in U$. But 
+  $X_m = \{i < \omega \mid f(i) = m = f_m(i)\}$, so $[f]_U = [f_m]_U$.
+\end{proof}
+
+\begin{proposition} \label{prop: id_f}
+  There is $f : \omega \ra \bb{N}$ such that, for all $n \in \bb{N}$, we have 
+  $\prod_U \mathfrak{A} \models j_U(n) < [f]_U$.
+\end{proposition}
+
+\begin{proof}
+  Let $f : \omega \ra \bb{N}$ be the identity function, i.e., $f(i) = i$ for all $i < \omega$. 
+  Now, for all $n \in \bb{N}$, we have
+  \[
+    \{i < \omega \mid f_n(i) < f_i\} = \{i < \omega \mid i > n\} = \{n+1, n+2, n+3, \ldots\}.
+  \]
+  This set contains all but finitely many elements of $\omega$, so, since $U$ is a nonprincipal 
+  ultrafilter, it is an element of $U$. Thus, we have 
+  \[
+    \prod_U \mathfrak{A} \models j_U(n) < [f]_U.
+  \]
+\end{proof}
+
+It is quite easy to construct many other functions $f$ that satisfy the conclusion of 
+Proposition \ref{prop: id_f}. In fact, there are $2^{\aleph_0}$-many such functions. 
+Thus, the structure of $\prod_U \mathfrak{A}$ is roughly as follows: at the bottom there is 
+a copy of the standard natural numbers that is equal to 
+$\{j_U(n) \mid n \in \bb{N}\}$, and above that is a much larger more complicated structure. 
+The precise properties of this structure are quite interesting, but beyond the scope of this 
+particular lecture. I encourage you to look into it more on your own.
+
+Finally, let us show that the ultrapower $\prod_U \mathfrak{A}$, ordered by its interpretation 
+of $<$, is not well-founded. This will show that the property of $<$ being a well-order cannot 
+be expressed by a first-order sentence in $\mc{L}$.
+
+\begin{proposition}
+  The interpretation of $<$ in $\prod_U \mathfrak{A}$ is not well-founded. In other words, 
+  there is a sequence $\langle f_i \mid i < \omega \rangle$ of functions from 
+  $\omega$ to $\bb{N}$ such that, for all $i < \omega$, we have
+  \[
+    \prod_U \mathfrak{A} \models [f_{i+1}]_U < [f_i]_U.
+  \]
+\end{proposition}
+
+\begin{proof}
+  For each $i < \omega$, define $f_i : \omega \ra \bb{N}$ by letting 
+  \[
+    f_i(j) = \begin{cases}
+      0 & \text{if } j < i \\
+      j-i & \text{if } j \geq i.
+    \end{cases}
+  \]
+  We claim that, for all $i < \omega$, we have
+  \[
+    \prod_U \mathfrak{A} \models [f_{i+1}]_U < [f_i]_U.
+  \]
+  To see this, fix $i < \omega$. Note that, for all $j > i$, we have
+  \[
+    f_{i+1}(j) = j - (i + 1) = j - i - 1 < j - i = f_i(j).
+  \]
+  Since $U$ is a nonprincipal ultrafilter, the set $\{j < \omega \mid j > i\}$ is in $U$. 
+  Therefore, $\{j < \omega \mid f_{i+1}(j) < f_i(j)\}$ is in $U$, so 
+  \[
+    \prod_U \mathfrak{A} \models [f_{i+1}]_U < [f_i]_U,
+  \]
+  as desired.
+\end{proof}
+
+\section{Nonstandard real numbers}
+
+Let $\mc{L} = \{+, \cdot, <, 0, 1\}$, where $+$ and $\cdot$ are binary function symbols, 
+$<$ is a binary relation symbol, and $0$ and $1$ are constant symbols. Let 
+$\mathfrak{A} = (\bb{R}, +_{\bb{R}}, \cdot_{\bb{R}}, <_{\bb{R}}, 0_{\bb{R}}, 1_{\bb{R}})$, 
+where
+\begin{itemize}
+  \item $\bb{R}$ is the usual set of real numbers;
+  \item $+_{\bb{R}}$ and $\cdot_{\bb{R}}$ are the usual operations of addition and multiplication, 
+  respectively, on $\bb{R}$;
+  \item $<_{\bb{R}}$ is the usual ordering of $\bb{R}$;
+  \item $0_{\bb{R}}$ is the real number $0$ and $1_{\bb{R}}$ is the real number $1$.
+\end{itemize}
+
+As in the previous section, let $U$ be a nonprincipal ultrafilter over $\omega$ and consider 
+the ultrapower $\prod_U \mathfrak{A}$ and the resulting ultrapower map 
+$j_U : \bb{R} \ra \prod_U \bb{R}$. For each real number $r \in \bb{R}$, let 
+$f_r : \omega \ra \bb{R}$ be the constant function taking value $r$. Then we have 
+$j_U(r) = [f_r]_U$ for all $r \in \bb{R}$.
+
+In what follows, if $r \in \bb{R}$ and $n \in \bb{N}$, then we will let 
+$n \ast r$ denote the result of adding $r$ to itself $n$ times, i.e., 
+\[
+  n \ast r = \underbrace{r + r + \cdots + r}_{\text{$n$ times}}.
+\]
+(Note that we are using $\ast$ for this rather than $\cdot$ because this is being calculated 
+\emph{outside} of the structure $\mathfrak{A}$ rather than internally.) Similarly, 
+given $f : \omega \ra \bb{R}$ and $n \in \bb{N}$, we let 
+\[
+  n \ast [f]_U = \underbrace{[f]_U + [f]_U + \cdots + [f]_U}_{\text{$n$ times}},
+\]
+as calculated in the ultrapower $\prod_U \mathfrak{A}$.
+
+An important property of the standard set of real numbers is that it is \emph{Archimedean}, i.e., 
+for every \emph{positive} real number $r$, if we add $r$ to itself enough times, it becomes 
+arbitrarily large. More precisely:
+
+\begin{exercise}
+  Prove that $\mathfrak{A}$ is Archimedean, i.e., for all real numbers $a,b > 0$, there is 
+  $n \in \bb{N}$ such that $n \ast a > b$.
+\end{exercise}
+
+We will now show, however, that the ultrapower $\prod_U \mathfrak{A}$ is \emph{not} 
+Archimedean. In particular, this will show that the property of being Archimedean cannot be 
+expressed in a first-order way in the language $\mc{L}$.
+
+\begin{theorem}
+  The ultrapower $\prod_U \mathfrak{A}$ is not Archimedean. In other words, there are 
+  $f,g:\omega \ra \bb{R}$ such that
+  \begin{itemize}
+    \item $\prod_U \mathfrak{A} \models [f_0]_U < [f]_U \wedge [f_0]_U < [g]_U$;
+    \item for all $n \in \bb{N}$, $\prod_U \mathfrak{A} \models n \ast [f]_U < [g]_U$.
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  First, define $f:\omega \ra \bb{R}$ by letting $f(i) = 1/(i+1)$ for every $i < \omega$.
+  Let $g = f_1$ be the constant function taking value $1$. Note that, for all $i < \omega$, 
+  we have $f(i), g(i) > 0$, and hence
+  \[
+    \prod_U \mathfrak{A} \models [f_0]_U < [f]_U \wedge [f_0]_U < [g]_U.
+  \]
+  It remains to show that, for all $n \in \bb{N}$, we have
+  \[
+    \prod_U \mathfrak{A} \models n \ast [f]_U < [g]_U.
+  \]
+  To this end, fix an arbitrary $n \in \bb{N}$. For every $i < \omega$, we have 
+  \[
+    (n \ast [f]_U)(i) = \underbrace{1/(i+1) + 1/(i+1) + \cdots + 1/(i+1)}_{\text{$n$ times}} 
+    = n/(i+1).
+  \]
+  Thus, for all $i \geq n$, we have
+  \[
+    (n \ast [f]_U)(i) = n/(i+1) < 1 = g(i).
+  \]
+  Since $U$ is a nonprincipal ultrafilter, the set $\{i < \omega \mid i \geq n\}$ is in $U$. 
+  Therefore, we have
+  \[
+    \prod_U \mathfrak{A} \models n \ast [f]_U < [g]_U,
+  \]
+  as desired.
+\end{proof}
+
+The element $[f]_U$ from the proof of the previous theorem is often called an \emph{infinitesimal} 
+element of ultrapower $\prod_U \mathfrak{A}$, since it is greater than $0$ but strictly 
+smaller than $j_U(r)$ for every positive $r \in \bb{R}$. It can thus be thought of as an 
+\emph{infinitely small} but still positive nonstandard real number. Similarly, there are 
+\emph{infinite} elements of the ultrapower $\prod_U \mathfrak{A}$ that are greater than 
+$j_U(r)$ for every $r \in \bb{R}$. For example the function $h$ defined by 
+$h(i) = i$ for all $i < \omega$ is such an infinite element. One of the most interesting applications 
+of the nonstandard real numbers is in providing an alternate foundation for calculus that is in many 
+ways more elegant than the standard foundation. These infinitesimal and infinite nonstandard 
+real numbers play a key role in this theory.
+
+\section{The compactness theorem}
+
+You may have seen other proofs that the notion of \emph{well-order} or the Archimedean property 
+cannot be expressed in a first order way. It is likely that such proofs involved applications of 
+the Compactness Theorem for first-order logic. It is no accident that we were also able to prove 
+them using ultraproducts. In fact, ultraproducts allow us to produce a very elegant proof of the 
+Compactness Theorem itself.
+
+\begin{theorem}[Compactness Theorem for first-order logic]
+  Suppose that $\mc{L}$ is a first-order language and $T$ is a set of $\mc{L}$-sentences. Then the 
+  following are equivalent:
+  \begin{enumerate}
+    \item $T$ is finitely satisfiable, i.e., for every finite subset $T_0 \subseteq T$, there is an 
+    $\mc{L}$-structure $\mathfrak{A}$ such that $\mathfrak{A} \models T_0$.
+    \item $T$ is satisfiable, i.e., there is an $\mc{L}$-structure $\mathfrak{A}$ such that 
+    $\mathfrak{A} \models T$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  The direction $(2) \Rightarrow (1)$ is trivial, since if $\mathfrak{A} \models T$, 
+  then $\mathfrak{A} \models T_0$ for every finite $T_0 \subseteq T$. 
+  
+  To prove that $(1) \Rightarrow (2)$, assume that $T$ is finitely satisfiable. Let 
+  $I$ be the collection of all finite subsets of $T$. For each $S \in I$, fix an 
+  $\mc{L}$-structure $\mathfrak{A}_S$ such that $\mathfrak{A}_S \models S$.
+  
+  For each $S \in I$, let $S^* = \{W \in I \mid S \subseteq W\}$. In other words, 
+  $S^*$ is the collection of all finite subsets of $T$ that contain all of the elements of 
+  $S$. Let 
+  \[
+    \mc{F} = \{X \in \power(I) \mid \exists S \in I \ [S^* \subseteq X]\}.
+  \]
+  
+  \begin{exercise}
+    Prove that $\mc{F}$ is a filter over $I$.
+  \end{exercise}
+  
+  By Theorem \ref{thm: ultrafilter_extension}, we can find an ultrafilter $U$ over $I$ 
+  such that $\mc{F} \subseteq U$. Now let $\mathfrak{A}$ be the ultraproduct
+  \[
+    \mathfrak{A} = \prod_{S \in I} \mathfrak{A}_S / U.
+  \]
+  We claim that $\mathfrak{A} \models T$, i.e., for every sentence $\varphi \in T$, 
+  $\mathfrak{A} \models \varphi$. Fix such a sentence $\varphi$, and let 
+  $S = \{\varphi\}$. Then $S^* \in \mc{F} \subseteq U$. Moreover, for every 
+  $W \in S^*$, we have $\varphi \in W$, and hence 
+  \[
+    \mathfrak{A}_W \models \varphi.
+  \]
+  Hence, the set
+  \[
+    \{W \in I \mid \mathfrak{A}_W \models \varphi\}
+  \]
+  is in $U$. By \L os' Theorem, it follows that $\mathfrak{A} \models \varphi$. 
+  Hence $\mathfrak{A} \models T$, so $T$ is satisfiable.
+\end{proof}
 
 \end{document}
