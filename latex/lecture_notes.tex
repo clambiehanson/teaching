@@ -2802,4 +2802,392 @@ Compactness Theorem itself.
   Hence $\mathfrak{A} \models T$, so $T$ is satisfiable.
 \end{proof}
 
+\chapter{Lecture 6: Bases in algebraic structures, Part I}
+
+In this lecture, we begin to introduce some concepts and structures from algebra. 
+As a framework for their introduction, and as an illustration of some applications 
+of set theory and logic to algebra, we will use the axiom of choice to prove various 
+results about the existence of bases. We begin by studying abelian groups.
+
+\begin{definition} \label{def: group}
+  A \emph{group} consists of a nonempty set $G$ and a binary operation ``$+$" on $G$
+  satisfying the following properties:
+  \begin{itemize}
+    \item (Associativity) For all $x,y,z \in G$, we have $(x + y) + z = x + (y+z)$.
+    \item (Identity element) There exists a unique element $0_G \in G$ such that, for all 
+    $x \in G$, we have $x + 0_G = x = 0_G + x$.
+    \item (Inverse elements) For every $x \in G$, there is a unique element $y \in G$ 
+    such that $x + y = 0_G = y + x$. This element $y$ is called the \emph{inverse} of 
+    $x$, and is often denoted ``$(-x)$".
+  \end{itemize}
+  A group $G$ is called \emph{abelian} if, moreover, it satisfies the following property:
+  \begin{itemize}
+    \item (Commutativity) For all $x,y \in G$, we have $x + y = y + x$.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  We will often denote a group simply by its underlying set $G$ without explicitly 
+  mentioning its binary operation. If clarification is needed, we will sometimes 
+  denote the binary operation of $G$ by ``$+_G$".
+
+  Typically, if $G$ is an arbitrary group that is not necessarily abelian, its binary operation 
+  is usually denoted by ``$\cdot$" instead of ``$+$", the identity element is denoted by 
+  ``$1_G$" instead of ``$0_G$" and, given an element $x \in G$, its inverse element is denoted by 
+  ``$x^{-1}$" instead of ``$(-x)$". The notation we are using here is more typical if $G$ is 
+  known to be an abelian group. Since we will be dealing almost exclusively with abelian groups 
+  in this course, we will stick with the additive notation.
+\end{remark}
+
+\begin{example}
+  Let us give some simple examples of groups:
+  \begin{itemize}
+    \item The set $\bb{Z}$ of integers, with the usual operation of addition, is an abelian group.
+    \item The set $\bb{Q}$ of rational numbers, with the usual operation of addition, is an 
+    abelian group.
+    \item The set $\bb{R}$ of real numbers, with the usual operation of addition, is an abelian group.
+    \item The set $\bb{R} \setminus \{0\}$ of nonzero real numbers, with the operation of 
+    multiplication, is an abelian group.
+    \item The set of all real $2 \times 2$ matrices, with the operation of matrix addition, is 
+    an abelian group.
+    \item The set of all \emph{invertible} real $2 \times 2$ matrices, with the operation of 
+    matrix multiplication, is a (nonabelian) group.
+    \item Let $X$ be any set. Then the set of all bijections $f : X \ra X$, with the operation of 
+    composition of functions (i.e., $f + g = f \circ g$) is a group. It is abelian if $|X| \leq 2$ 
+    and nonabelian if $|X| > 2$.
+  \end{itemize}
+\end{example}
+
+\begin{definition}
+  Suppose that $G$ and $H$ are groups. A function $\pi : G \ra H$ is a \emph{group homomorphism} 
+  if, for all $x,y \in G$, we have
+  \[
+    \pi(x +_G y) = \pi(x) +_H \pi(y).
+  \]
+  A group homomorphism $\pi : G \ra H$ is called an \emph{isomorphism} if it is bijective. 
+  Two groups $G$ and $H$ are said to be \emph{isomorphic}, denoted 
+  $G \cong H$, if there is an isomorphism $\pi : G \ra H$.
+\end{definition}
+
+\begin{exercise}
+  Suppose that $\pi : G \ra H$ is a group homomorphism.
+  \begin{enumerate}
+    \item Prove that $\pi(0_G) = 0_H$.
+    \item Prove that, for all $x \in G$, $\pi(-x) = -\pi(x)$.
+    \item Prove that, if $\pi$ is an isomorphism, then its inverse map 
+    $\pi^{-1} : H \ra G$ is also a group homomorphism (and hence an isomorphism).
+  \end{enumerate}
+\end{exercise}
+
+If two groups are isomorphic, then they have the same algebraic structure. They are essentially 
+the same group, except possibly their elements have been renamed. From an algebraic point of 
+view, they are though of as equal.
+
+\begin{definition}
+  If $G$ is an abelian group, $n \in \bb{N}$, and $x \in G$, then we let $nx$ denote the result of 
+  adding $x$ to itself $n$ times, i.e., 
+  \[
+    nx = \underbrace{x +_G x +_G \cdots +_G x}_{\text{$n$ times}}.
+  \]
+  If $a \in \bb{Z}$ is a \emph{negative} integer, so $a = -n$ for some $n \in \bb{N}$, then we 
+  let $ax$ denote the result of adding $(-x)$ to itself $n$ times, i.e.,
+  \[
+    (-n)x = n(-x) = \underbrace{(-x) +_G (-x) +_G \cdots +_G (-x)}_{\text{$n$ times}}.
+  \]
+\end{definition}
+
+\begin{definition}
+  Let $G$ be an abelian group, and let $E \subseteq G$. We say that $E$ \emph{generates} $G$ 
+  if every element of $G$ can be expressed as a finite sum of elements of $E$, together with 
+  their inverses. In other words, $E$ generates $G$ if, for every $x \in G$, there are 
+  finitely many elements $e_1, \ldots, e_n \in E$ and integers $a_1, \ldots, a_n \in \bb{Z}$ 
+  such that
+  \[
+    x = a_1e_1 +_G a_2e_2 +_G \cdots +_G a_ne_n = \sum_{i=1}^n a_ie_i.
+  \] 
+\end{definition}
+
+\begin{example}
+  \begin{itemize}
+    \item The set $\{1\}$ generates the abelian group $(\bb{Z}, +)$.
+    \item The set $E = \{1/n \mid n \in \bb{N} \setminus \{0\}\}$ generates the 
+    abelian group $(\bb{Q}, +)$.
+  \end{itemize}
+\end{example}
+
+\begin{definition}
+  Let $G$ be an abelian group, and let $E \subseteq G$. We say that $E$ is \emph{linearly 
+  independent} if, for every finite sequence $\langle e_1, e_2, \ldots, e_n \rangle$ of 
+  distinct elements of $E$ and, for every sequence $\langle a_1, a_2, \ldots, a_n \rangle$ 
+  of integers, if
+  \[
+    a_1e_1 + a_2e_2 + \cdots + a_ne_n = 0,
+  \]
+  then $a_1 = a_2 = \cdots = a_n = 0$.
+\end{definition}
+
+\begin{definition}
+  Let $G$ be an abelian group, and let $E \subseteq G$. We say that $E$ is a \emph{basis} 
+  for $G$ is it generates $G$ and is linearly independent. If $G$ has a basis, then 
+  $G$ is said to be a \emph{free abelian group}.
+\end{definition}
+
+Not all abelian groups have bases. In fact, the free abelian groups are quite special in 
+the class of all abelian groups.
+
+\begin{exercise}
+  Suppose that $G$ is an abelian group and $E \subseteq G$. Prove that the following are equivalent:
+  \begin{itemize}
+    \item $E$ is a basis for $G$;
+    \item for every $x \in G$, there is a unique finite set $I \subseteq E$ and a unique 
+    set $\{a_e \mid e \in I\}$ of nonzero integers such that
+    \[
+      x = \sum_{e \in I} a_ee.
+    \]
+  \end{itemize}
+\end{exercise}
+
+\begin{example}
+  \begin{itemize}
+    \item We have already seen that $\{1\}$ generates $(\bb{Z}, +)$. It is also linearly independent: 
+    if $a$ is a nonzero integer, then $a1 = a \neq 0$. Thus, $\{1\}$ is a basis for $\bb{Z}$, and 
+    hence $\bb{Z}$ is a free abelian group.
+    \item We saw above that the set $E = \{1/n \mid n \in \bb{N} \setminus \{0\}\}$ generates 
+    $(\bb{Q}, +)$. However, $E$ is not linearly independent. For example, if 
+    $e_1 = 1/1$ and $e_2 = 1/2$, then we have
+    \[
+      e_1 - 2e_2 = 0,
+    \]
+    thus witnessing that $E$ is not linearly independent. Thus, $E$ is not a basis for 
+    $(\bb{Q}, +)$. In fact, we will show in the next theorem that $(\bb{Q}, +)$ does not have 
+    a basis, and thus is not free.
+  \end{itemize}
+\end{example}
+
+\begin{theorem}
+  The abelian group $(\bb{Q}, +)$ is not free.
+\end{theorem}
+
+\begin{proof}
+  Suppose for the sake of contradiction that $E \subseteq \bb{Q}$ is a basis for $\bb{Q}$. 
+  Suppose first that $E$ only has one element, i.e., $E = \{e\}$. Then $e$ must be a nonzero 
+  rational number, so $e/2$ is a nonzero rational number. Since $E$ is a basis, there must be 
+  an integer $a \in \bb{Z}$ such that $ae = e/2$. Rearranging this equation algebraically yields
+  $2ae = e$, so $2ae - e = 0$, so $e(2a - 1) = 0$. Since $e$ is nonzero, we must have 
+  $2a - 1 = 0$, i.e., $a = 1/2$, contradicting the fact that $a \in \bb{Z}$. 
+  
+  Thus, we must have $|E| > 1$. Let $e_1, e_2$ be two distinct elements of $E$. Since $e_1$ 
+  and $e_2$ are nonzero rational numbers, we can express them as 
+  \[
+    e_1 = \frac{p_1}{q_1} \hspace{0.25in} \text{ and } \hspace{0.25in} e_2 = \frac{p_2}{q_2}
+  \]
+  where $p_1, p_2, q_1, q_2$ are nonzero integers and $q_1,q_2 > 0$. Now let 
+  $a_1 = p_2q_1$ and $a_2 = -p_1q_2$. Then $a_1$ and $a_2$ are nonzero integers, and we have
+  \[
+    a_1e_1 + a_2e_2 = \frac{p_1p_2q_1}{q_1} + \frac{-p_1p_2q_2}{q_2} = 
+    \frac{p_1p_2q_1q_2}{q_1q_2} + \frac{-p_1p_2q_1q_2}{q_1q_2} = 
+    \frac{p_1p_2q_1q_2 - p_1p_2q_1q_2}{q_1q_2} = 0,
+  \]
+  contradicting the fact that $E$ is linearly independent.
+\end{proof}
+
+\begin{example}
+  Suppose that $n$ is a positive natural number, and consider the group 
+  $\bb{Z}^n$, where the operation is pointwise addition. More precisely, given 
+  $(x_1, \ldots, x_n), (y_1, \ldots, y_n) \in \bb{Z}^n$, let 
+  \[
+    (x_1, \ldots, x_n) + (y_1, \ldots, y_n) = (x_1 + y_1, \ldots, x_n + y_n).
+  \]
+  Then $\bb{Z}^n$ is a free abelian group. For example, a basis is given by 
+  $E = \{e_1, \ldots, e_n\}$ where, for each $1 \leq i \leq n$, 
+  \[
+    e_i = \{0, \ldots, 0, \underbrace{1}_{i},0, \ldots, 0\}
+  \]
+  is the element of $\bb{Z}^n$ that is $0$ in every coordinate except coordinate $i$, 
+  where it is $1$.
+  
+  Note that the basis of a free abelian group is typically not unique. For example, 
+  we saw above that $E_0 = \{(1,0), (0,1)\}$ is a basis for $\bb{Z}^2$. But the set 
+  $E_1 = \{(1,0), (1,1)\}$ is also a basis for $\bb{Z}^2$ (Exercise: Prove this!).
+\end{example}
+
+The next exercise shows that a free abelian group is determined up to isomorphism by 
+the cardinality of its basis.
+
+\begin{exercise}
+  \begin{enumerate}
+    \item Suppose that $G$ is a free abelian group and $E_0$ and $E_1$ are bases for 
+    $G$. Prove that $|E_0| = |E_1|$.
+    \item Suppose that $G$ and $H$ are free abelian groups, $E_G$ is a basis for $G$, 
+    $E_H$ is a basis for $H$, and $|E_G| = |E_H|$. Prove that $G \cong H$. (Hint: 
+    Let $\sigma : E_G \ra E_H$ be a bijection. Now define a function $\pi : G \ra H$ 
+    as follows. For all $e_1, \ldots, e_n \in E_G$ and all $a_1, \ldots, a_n \in E_H$, 
+    set
+    \[
+      \pi(a_1e_1 +_G \cdots +_G a_ne_n) = a_1 \sigma(e_1) +_H \cdots +_H a_n \sigma(e_n).
+    \]
+    Prove that this defines an isomorphism $\pi : G \ra H$.)
+  \end{enumerate}
+\end{exercise}
+
+\begin{definition}
+  Suppose that $G$ is an abelian group and $H \subseteq G$. We say that $H$ is a 
+  \emph{subgroup} of $G$ if $(H, +_H)$ is an abelian group, where $+_H$ denotes the 
+  restriction of $+_G$ to $H$. Concretely, $H$ is a subgroup of $G$ if and only if
+  \begin{itemize}
+    \item $0_G \in H$;
+    \item for all $x,y \in H$, we have $x +_G y \in H$;
+    \item for all $x \in H$, we have $(-x) \in H$.
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  For every $m \in \bb{N}$, the set
+  \[
+    \{am \mid a \in \bb{Z}\} = \{\ldots, -3m, -2m, -m, 0, m, 2m, 3m, \ldots\}
+  \]
+  is a subgroup of $(\bb{Z}, +)$. We will see in the next theorem that these are the 
+  \emph{only} subgroups of $(\bb{Z}, +)$.
+\end{example}
+
+\begin{theorem} \label{thm: cyclic_subgroup}
+  Suppose that $H$ is a subgroup of $(\bb{Z}, +)$. Then there is $m \in \bb{N}$ such that 
+  $H = \{am \mid a \in \bb{Z}\}$.
+\end{theorem}
+
+\begin{proof}
+  If $H = \{0\}$, then we can take $m = 0$, and we're done. Thus, assume that $H$ contains a 
+  nonzero element $x$. Then, since both $x$ and $-x$ must be in $H$, it must contain a 
+  strictly positive element. Let $m$ be the smallest strictly positive integer in $H$. 
+  
+  We claim that $H = \{am \mid a \in \bb{Z}\}$. First note that, since $H$ is a subgroup, 
+  we must have $m + m$, $m + m + m$, $-m$, $-m-m$, etc.\ all in $H$. Thus, $H \supseteq \{am
+  \mid a \in \bb{Z}\}$. We must show that $H \subseteq \{am \mid a \in \bb{Z}\}$. Suppose that 
+  there is an element $x$ in $H$ that is not divisible by $m$. Since both $x$ and $-x$ are in 
+  $H$, we know that $H$ must contain a positive integer $y$ that is not divisible by $m$. 
+  By Euclid's division lemma, we can write $y$ as 
+  \[
+    y = km + r,
+  \]
+  where $k \in \bb{N}$ and $r \in \{1, 2, \ldots, m-1\}$ ($r$ is the \emph{remainder} when 
+  $y$ is divided by $m$). But then both $y$ and $km$ are in $H$, so $y - km = r$ is in $H$. 
+  But $0 < r < m$, contradicting the fact that $m$ is the smallest positive integer in $H$.
+\end{proof}
+
+We now use the axiom of choice, in particular the well-ordering principle, 
+to prove a very important basic theorem about abelian groups: 
+every subgroup of a free abelian group is itself free.
+
+\begin{theorem}
+  Suppose that $G$ is a free abelian group. Then every subgroup of $H$ is also a free abelian group.
+\end{theorem}
+
+\begin{proof}
+  Let $E$ be a basis for $G$. By the well-ordering principle, we can find a well-ordering of $E$. 
+  In particular, we can express $E$ as $\{e_\alpha \mid \alpha < \kappa\}$ for some cardinal 
+  $\kappa$.
+  
+  Now let $H$ be an arbitrary subgroup of $G$. We must find a basis for $H$.
+  
+  For every nonzero element $x$ of $H$, there is a unique finite set of ordinals 
+  $\alpha_1 < \ldots < \alpha_n < \kappa$ and nonzero integers $a_1, \ldots, a_n \in \bb{Z}$ 
+  such that
+  \[
+    x = a_1 e_{\alpha_1} + \cdots + a_n e_{\alpha_n}.
+  \]
+  In such a situation, we let $\#(x)$ denote $\alpha_n$ and $C(x)$ denote $a_n$, i.e., $\#(x)$ is the 
+  largest ordinal appearing as an index of a basis element when writing $x$ as a sum of basis elements, 
+  and $C(x)$ is the coefficient of $e_{\#(x)}$ in this expression.
+  
+  For each $\alpha < \kappa$, let $H_\alpha = \{x \in H \mid \#(x) = \alpha\}$, and let 
+  $Z_\alpha = \{0\} \cup \{C(x) \mid x \in H_\alpha\}$.
+  
+  \begin{lemma}
+    For each $\alpha < \kappa$, $Z_\alpha$ is a subgroup of $(\bb{Z}, +)$.
+  \end{lemma}
+  
+  \begin{proof}
+    Fix $\alpha < \kappa$. By definition, we have $0 \in Z_\alpha$. Now suppose that 
+    $a,b \in Z_\alpha$. We must show that $a + b \in Z_\alpha$. If one of $a$ or $b$ is 
+    zero, then we have $a + b \in \{a,b\}$, and we are done. So assume that $a,b \neq 0$. 
+    If $a = -b$, then we have
+    $a + b = 0 \in Z_\alpha$, so we are done. Thus, assume that $a \neq -b$.
+    Now, by the definition of $Z_\alpha$, there are $x,y \in H_\alpha$ such that 
+    $x = ae_\alpha + g$ and $y = be_\alpha + h$, where $g$ and $h$ are sums of elements of 
+    $\{e_\beta \mid \beta < \alpha\}$. Then $x + y = (a + b) e_\alpha + (g + h)$. By 
+    assumption, $(a + b) \neq 0$, and $(g + h)$ is a sum of elements of 
+    $\{e_\beta \mid \beta < \alpha\}$. Since $H$ is a subgroup of $G$, we have 
+    $x + y \in H$. Thus, $x + y \in H_\alpha$ and $C(x + y) = (a + b)$, so 
+    $a + b \in Z_\alpha$.
+    
+    Finally, fix $a \in Z_\alpha$. We must show that $-a \in Z_\alpha$. If $a = 0$, 
+    then $-a = a$, and we are done. So assume that $a \neq 0$. Then there is $x \in H_\alpha$ 
+    such that $x = ae_\alpha + g$, where $g$ is a sum of elements of $\{e_\beta \mid 
+    \beta < \alpha\}$. Then $-x = -ae_\alpha -g$. Since $H$ is a subgroup, $-x \in H$. 
+    Thus, $-x \in H_\alpha$, and $C(-x) = -a$, so $-a \in Z_\alpha$.
+  \end{proof}
+  
+  By Theorem \ref{thm: cyclic_subgroup}, for each $\alpha < \kappa$, we can fix 
+  $m_\alpha \in \bb{N}$ such that $Z_\alpha = \{am_\alpha \mid a \in \bb{Z}\}$. 
+  Let $A = \{\alpha < \kappa \mid n_\alpha > 0\}$. For all $\alpha \in A$, by definition of $Z_\alpha$, we can 
+  choose an element $v_\alpha \in H_\alpha$ such that $C(v_\alpha) = m_\alpha$ 
+  (note that making this simultaneous choice of $v_\alpha$ for all $\alpha \in A$
+  represents another use of the axiom of choice). Let 
+  \[
+    B = \{v_\alpha \mid \alpha \in A\}.
+  \]
+  
+  We claim that $B$ is a basis for $H$. Clearly, $B \subseteq H$. 
+  We first show that it is linearly independent. To 
+  this end, fix ordinals $\alpha_1 < \ldots < \alpha_n$ from $A$ and nonzero integers 
+  $a_1, \ldots, a_n$. We must show that $a_1 v_{\alpha_1} + \cdots + 
+  a_n v_{\alpha_n} \neq 0$. Notice that the largest index appearing in this sum is 
+  $\alpha_n$, and it only appears in the term $a_n v_{\alpha_n}$. We then know that 
+  \[
+    a_1 v_{\alpha_1} + \cdots + a_n v_{\alpha_n} = a_n m_{\alpha_n} e_{\alpha_n} + g,
+  \]
+  where $g$ is a sum of elements of $\{e_\beta \mid \beta < \alpha_n\}$. Since 
+  $a_n m_{\alpha_n} \neq 0$ and $E$ is linearly independent, it follows that 
+  \[
+    a_1 v_{\alpha_1} + \cdots + a_n v_{\alpha_n} \neq 0.
+  \]
+  Thus, $B$ is linearly independent.
+  
+  Finally, we must show that $B$ generates all of $H$. Suppose for the sake of contradiction 
+  that there is an element of $H$ that cannot be expressed as a sum of elements of $B$. 
+  Choose such an $x \in H$ such that $\#(x)$ is minimal, i.e., for all $y \in H$ with 
+  $\#(y) < \#(x)$, $y$ \emph{can} be expressed as a sum of elements of $B$.
+  Let $\alpha = \#(x)$. Then 
+  \[
+    x = C(x) e_\alpha + g,
+  \]
+  where $g$ is a sum of elements of $\{e_\beta \mid \beta < \alpha\}$ and 
+  $C(x) \neq 0$. We know that $C(x) \in Z_\alpha$, so there is a nonzero $a \in \bb{Z}$ 
+  such that $C(x) = am_\alpha$. Now consider the element $v_\alpha \in B$. We know that 
+  \[
+    v_\alpha = m_\alpha e_\alpha + h,
+  \]
+  where $h$ is a sum of elements of $\{e_\beta \mid \beta < \alpha\}$.
+  Let $y = x - av_\alpha$. Since both $x$ and $v_\alpha$ are in $H$, we have $y \in H$. 
+  Also,
+  \[
+    y = x - av_\alpha = am_\alpha e_\alpha + g - am_\alpha e_\alpha - ah = g - ah,
+  \]
+  so $y = g - ah$, which is a sum of elements of $\{e_\beta \mid \beta < \alpha\}$. 
+  In particular, $\#(y) < \alpha$. Thus, by the minimality of $\#(x)$, we know that 
+  $y$ can be written as a sum of elements of $B$. In other words, there are 
+  ordinals $\beta_1 < \ldots < \beta_n$ from $A$ and integers $b_1, \ldots, b_n$ 
+  such that 
+  \[
+    y = b_1 v_{\beta_1} + \ldots + b_n v_{\beta_n}.
+  \]
+  But $y = x - av_\alpha$, so
+  \[
+    x = y + av_\alpha = b_1 v_{\beta_1} + \ldots + b_n v_{\beta_n} + av_\alpha,
+  \]
+  so we have written $x$ as a sum of elements of $B$, contradicting our choice of $x$. 
+  Thus, $B$ does generate all of $H$. It is therefore a basis for $H$, and hence 
+  $H$ is free.
+\end{proof}
+
 \end{document}
