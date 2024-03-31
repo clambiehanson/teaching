@@ -3190,4 +3190,440 @@ every subgroup of a free abelian group is itself free.
   $H$ is free.
 \end{proof}
 
+\chapter{Lecture 7: Bases in algebraic structures, Part II}
+
+We continue here our exploration of algebraic structures, moving from abelian groups to 
+\emph{fields}, and in particular \emph{algebraically closed fields}.
+
+\begin{definition}
+  A \emph{field} consists of a nonempty set $F$ and two binary relations ``$+$" and 
+  ``$\cdot$" on $F$ satisfying the following properties:
+  \begin{itemize}
+    \item (Associativity) For all $a,b,c \in F$, we have $(a + b) + c = a + (b + c)$ 
+    and $(a \cdot b) \cdot c = a \cdot (b \cdot c)$;
+    \item (Commutativity) for all $a,b \in F$, we have $a + b = b + a$ and $a \cdot b = 
+    b \cdot a$;
+    \item (Identity elements) There are unique and distinct elements $0_F, 1_F \in F$ such that, for all 
+    $a \in F$, we have $a + 0_F = a$ and $a \cdot 1_F = a$;
+    \item (Additive inverse) For every $a \in F$, there is a unique $b \in F$ such that 
+    $a + b = 0_F$. This element $b$ is denoted ``$(-a)$" and is called the 
+    \emph{additive inverse} of $a$;
+    \item (Multiplicative inverse) For every $a \in F$ with $a \neq 0_F$, there is a 
+    unique element $b \in F$ such that $a \cdot b = 1_F$. This element $b$ is denoted 
+    ``$a^{-1}$" or ``$1/a$" and is called the \emph{multiplicative inverse} of $a$;
+    \item (Distributivity) For all $a,b,c \in F$, we have $a \cdot (b + c) = (a \cdot b) 
+    + (a \cdot c)$.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  Note that, if $(F, +, \cdot)$ is a field, then both $(F, +)$ and $(F \setminus \{0_F\}, 
+  \cdot)$ are abelian groups, called the \emph{additive group of $F$} and the \emph{multiplicative 
+  group of $F$}, respectively.
+\end{remark}
+
+Intuitively, a field is an algebraic structure in which one can add, subtract, multiply, 
+and divide, and in which these operations behave similarly to how they behave in familiar 
+structures, such as the real numbers. If $a,b \in F$, then we will often write 
+$a-b$ instead of $a + (-b)$, and, if $b \neq 0_F$, we will write $a/b$ instead of 
+$a \cdot (b^{-1})$.
+
+\begin{example}
+  \begin{enumerate}
+    \item $(\bb{Q}, +, \cdot)$, the rational numbers with the usual operations, is a field.
+    \item $(\bb{R}, +, \cdot)$, the real numbers with the usual operations, is a field.
+    \item $(\bb{C}, +, \cdot)$, the complex numbers with the usual operations, is a field. 
+    Recall that $\bb{C} = \{a + bi \mid a,b \in \bb{R}\}$, where $i \in \bb{C}$ is such that 
+    $i^2 = -1$.
+    \item Let $p \in \bb{N}$ be a prime number, and let $\bb{F}_p = \{0,1,\ldots, p-1\}$. 
+    Then $(\bb{F}_p, +_p, \cdot_p)$ is a field, where $+_p$ and $\cdot_p$ denote addition 
+    and multiplication \emph{modulo $p$}, respectively. For instance, in $\bb{F}_5$, 
+    we have $3 +_5 4 = 2$, since $3 + 4 = 7 \equiv 2 \mod 5$, and also $3 \cdot_5 4 = 2$, 
+    since $3 \cdot 4 = 12 \equiv 2 \mod 5$.
+  \end{enumerate}
+\end{example}
+
+Field homomorphisms and isomorphisms are defined similarly to how they are defined for 
+abelian groups:
+
+\begin{definition}
+  Suppose that $F$ and $K$ are fields. Then a function $\pi : F \ra K$ is a \emph{field 
+  homomorphism} if
+  \begin{itemize}
+    \item for all $a,b \in F$, we have $\pi(a +_F b) = \pi(a) +_K \pi(b)$;
+    \item for all $a,b \in F$, we have $\pi(a \cdot_F b) = \pi(a) \cdot_K \pi(b)$;
+    \item $\pi(1_F) = 1_K$.
+  \end{itemize}
+  A \emph{field isomorphism} is a field homomorphism that is a bijection. If there 
+  exists a field isomorphism $\pi : F \ra K$, then we say that $F$ and $K$ are 
+  \emph{isomorphic}, denoted $F \cong K$.
+\end{definition}
+
+\begin{definition}
+  As in the previous section, if $F$ is a field, $n$ is a natural number, and 
+  $a \in F$, then we define $na$ to be the result of adding $a$ to itself $n$ times, i.e., 
+  \[
+    na = \underbrace{a +_F a +_F \cdots +_F a}_{\text{$n$ times}}
+  \]
+  If there is a positive natural number $n$ such that $n 1_F = 0_F$, then the least such 
+  positive number is called the \emph{characteristic} of $F$. If there is no such 
+  positive natural number, then the characteristic of $F$ is said to be $0$.
+  
+  We can similarly define exponentiation by natural numbers. If $n$ is a natural number 
+  and $a \in F$, then we define $a^n$ to be the result of multiplying $a$ by itself $n$ times, 
+  i.e.,
+  \[
+    a^n = \underbrace{a \cdot_F a \cdot_F \cdots \cdot_F a}_{\text{$n$ times}}.
+  \]
+  
+  We extend these definitions to negative integers in the usual way: if $n \in \bb{N}$ and 
+  $a \in F$, then $-na = n(-a)$, and $a^{-n} = (a^{-1})^n$.
+\end{definition}
+
+\begin{fact}
+  The characteristic of a field is always either $0$ or a prime natural number. The 
+  characteristics of $\bb{Q}$, $\bb{R}$, and $\bb{C}$ are all $0$. If $p$ is a prime number, 
+  then the characteristic of $\bb{F}_p$ is $p$.
+\end{fact}
+
+\begin{definition}
+  Suppose that $(K, +_K, \cdot_K)$ and $(L, +_L, \cdot_L)$ are fields. We say that 
+  $K$ is a \emph{subfield} of $L$ if
+  \begin{itemize}
+    \item $K \subseteq L$;
+    \item $+_K$ is the restriction of $+_L$ to $K$;
+    \item $\cdot_K$ is the restriction of $\cdot_L$ to $K$.
+  \end{itemize}
+  In this situation, we also say that $L$ is a \emph{field extension} of $K$.
+\end{definition}
+
+In a sense, the definition of a \emph{field} is designed precisely to allow one to solve 
+linear equations: If $F$ is a field, $a,b,c \in F$, and $x$ is a variable, then the equation
+\[
+  ax + b = c
+\]
+has a solution in $F$, i.e., there is a $d \in F$ such that $a \cdot d + b = c$. 
+(This solution $d$ can be calculated to be precisely $\frac{c-b}{a}$, or 
+$(c + (-b)) \cdot a^{-1}$.) This naturally leads to the question of whether one can solve 
+more general polynomial equations.
+
+\begin{definition}
+  Suppose that $F$ is a field. A \emph{polynomial over $F$ in one variable} is an expression of 
+  the form 
+  \[
+    p(x) = a_0 + a_1 x + a_2 x^2 + \cdot + a_n x^n,
+  \]
+  where $n \in \bb{N}$, $x$ is a variable, and, for all $i \leq n$, we have $a_i \in F$.
+  The \emph{degree} of a polynomial $p(x) = a_0 + a_1 x + a_2 x^2 + \cdot + a_n x^n$ is 
+  the largest $k \leq n$ such that $a_k \neq 0_F$.
+  
+  If $p(x)$ is a polynomial over $F$, then a \emph{root} of $p(x)$ is an element $b \in F$ 
+  such that $p(b) = 0_F$. In other words, if 
+  \[
+    p(x) = a_0 + a_1 x + a_2 x^2 + \cdot + a_n x^n,
+  \]
+  then a \emph{root} of $p(x)$ is a $b \in F$ such that
+  \[
+    a_0 + a_1 \cdot b + a_2 \cdot b^2 + \cdots + a_n \cdot b^n = 0_F.
+  \]
+\end{definition}
+
+A polynomial might or might not have any roots in a given field. For example, 
+the polynomial $p(x) = x^2 - 5x + 6$ has two roots in $\bb{Q}$, namely $x = 2$ and $x = 3$. 
+On the other hand, the polynomial $q(x) = x^2 + 1$ has no roots in $\bb{Q}$, or in $\bb{R}$. 
+It does have two roots in $\bb{C}$, though, namely $x = i$ and $x = -i$. Questions about 
+whether or not polynomials have roots leads to the important notion of an 
+\emph{algebraically closed field}.
+
+\begin{definition}
+  Suppose that $F$ is a field. We say that $F$ is an \emph{algebraically closed field} if 
+  every polynomial over $F$ has a root in $F$.
+\end{definition}
+
+\begin{example}
+  \begin{enumerate}
+    \item We have seen through the example of $q(x) = x^2 + 1$ that neither $\bb{Q}$ nor 
+    $\bb{R}$ is algebraically closed.
+    \item On the other hand, $\bb{C}$ \emph{is} an algebraically closed field: this is the 
+    statement of the Fundamental Theorem of Algebra.
+    \item For every prime number $p$, the polynomial $q(x) = x^p + 1$ does not have a root 
+    in $\bb{F}_p$. Thus, $\bb{F}_p$ is not algebraically closed.
+  \end{enumerate}
+\end{example}
+
+We will need various basic facts about fields that we will not have time to formally prove. 
+The first is the following.
+
+\begin{fact} \label{fact: roots}
+  Suppose that $K$ is a field and $p(x)$ is a polynomial over $K$ of degree $n$. Then 
+  $p(x)$ has at most $n$ distinct roots in $K$.
+\end{fact}
+
+\begin{definition}
+  Suppose that $L$ is a field extension of $K$ (so $K$ is a subfield of $L$). An element 
+  $b \in L$ is called \emph{algebraic over $K$} if there is a polynomial $p(x)$ over 
+  $K$ such that $b$ is a root of $p$. We say that $b$ is \emph{transcendental over 
+  $K$} if it is not algebraic over $K$.
+\end{definition}
+
+\begin{example}
+  Consider $\bb{R}$ as a field extension of $\bb{Q}$.
+  \begin{enumerate}
+    \item $\sqrt{2}$ is algebraic over $\bb{Q}$, since it is a root of the polynomial 
+    $p(x) = x^2 - 2$.
+    \item $\pi$ is transcendental over $\bb{Q}$: there is no polynomial $p(x)$ over 
+    $\bb{Q}$ such that $\pi$ is a root of $p$. The proof of this fact is quite difficult.
+  \end{enumerate}
+\end{example}
+
+\begin{remark}
+  Although it is quite difficult to prove that any particular real number is transcendental over 
+  $\bb{Q}$, it is quite easy to see that in fact \emph{most} real numbers are transcendental over 
+  $\bb{Q}$ just by counting. There are only countably many polynomials with rational 
+  coefficients, and each polynomial only has finitely many roots. Therefore, there are only 
+  countably many real numbers that are algebraic over $\bb{Q}$. Since $\bb{R}$ is uncountable, 
+  this means that the vast majority of real numbers are transcendental over $\bb{Q}$.
+\end{remark}
+
+\begin{definition}
+  Suppose that $L$ is a field extension of $K$. We say that $L$ is an \emph{algebraic field 
+  extension of $K$} if every element of $L$ is algebraic over $K$. We say that $L$ is a 
+  \emph{transcendental field extension of $K$} if there is an element of $L$ that is 
+  transcendental over $K$.
+\end{definition}
+
+\begin{proposition} \label{prop: alg_ext}
+  Suppose that $L$ is an algebraic field extension of $K$. Then $|L| \leq \max\{|K|, \aleph_0\}$.
+\end{proposition}
+
+\begin{proof}
+  Let $\kappa = \max\{|K|, \aleph_0\}$. There are at most $\kappa$-many polynomials over 
+  $K$ and, by Fact \ref{fact: roots}, every polynomial over $K$ has at most finitely many 
+  roots over $K$. Thus, there are at most $\kappa$-many elements of $L$ that are 
+  algebraic over $K$. Since $L$ is algebraic over $K$, we know that \emph{every} element of 
+  $L$ is algebraic over $K$, so $|L| \leq \kappa$.
+\end{proof}
+
+\begin{definition}
+  Suppose that $L$ is a field extension of $K$. We say that $L$ is an \emph{algebraic closure 
+  of $K$} if
+  \begin{enumerate}
+    \item $L$ is an algebraic field extension of $K$; and
+    \item $L$ is algebraically closed.
+  \end{enumerate}
+\end{definition}
+
+Intuitively, an algebraic closure of a field $K$ is the \emph{smallest} algebraically closed 
+field containing $K$. One can think of constructing it by adding roots to all of the polynomials 
+over $K$ that do not already have roots in $K$, and then closing under the field operations. 
+To make this precise, we need the following fact, which we will not prove.
+
+\begin{fact} \label{fact: adding_roots}
+  Suppose that $K$ is a field and $p(x)$ is a polynomial over $K$. Then there is an algebraic 
+  field extension $L$ of $K$ such that there is a root of $p(x)$ in $L$.
+\end{fact}
+
+We will also need the following fact, which we leave as an exercise.
+
+\begin{exercise} \label{exercise: algebraic_transitive}
+  If $L$ is an algebraic field extension of $K$ and $M$ is an algebraic field extension of $L$, 
+  then $M$ is an algebraic field extension of $K$.
+\end{exercise}
+
+We can now use Zorn's Lemma to establish the existence of algebraic closures.
+
+\begin{theorem}
+  Suppose that $K$ is a field. Then there is exists an algebraic closure of $K$.
+\end{theorem}
+
+\begin{proof}
+  Let $E$ be a set such that $E \supset K$ and $|E| > \max\{|K|, \aleph_0\}$. Let 
+  $P$ be the set of all fields $(L, +_L, \cdot_L)$ such that
+  \begin{itemize}
+    \item $L \subseteq E$; and
+    \item $(L, +_L, \cdot_L)$ is an algebraic field extension of $K$.
+  \end{itemize}
+  Let $P$ be ordered by the field extension relation, i.e., if 
+  $(L, +_L, \cdot_L), (M, +_M, \cdot_M) \in P$, then $(L, +_L, \cdot_L) \leq 
+  (M, +_M, \cdot_M)$ if and only if $(M, +_M, \cdot_M)$ is a field extension of 
+  $(L, +_L, \cdot_L)$.
+  
+  \begin{exercise}
+    Verify that $(P, \leq)$ is a partial order.
+  \end{exercise}
+  
+  We want to apply Zorn's lemma to $(P, \leq)$, so we must verify that every 
+  chain $C \subseteq P$ has an upper bound.
+  
+  \begin{lemma}
+    Suppose that $C \subseteq P$ is a chain, i.e., for all $(L, +_L, \cdot_L)$ and 
+    $(M, +_M, \cdot_M)$ in $C$, either $L$ is a subfield of $M$ or $M$ is a subfield of $L$.
+    Then there is an $(N, +_N, \cdot_N) \in P$ such that 
+    $(L, +_L, \cdot_L)$ is a subfield of $(N, +_N, \cdot_N)$ for all $(L, +_L, \cdot_L) \in C$.
+  \end{lemma}
+  
+  \begin{proof}
+    Let $N = \bigcup\{ L \mid (L, +_L, \cdot_L) \in C \}$, and define $+_N$ and $\cdot_N$ to 
+    agree with the field relations of the fields in $C$. In other words, for all 
+    $a,b \in N$, find $(L, +_L, \cdot_L) \in C$ such that $b,c \in L$, and set 
+    $b +_N c = b +_L c$ and $b \cdot_N c = b \cdot_L c$. Because $C$ is linearly ordered 
+    by $\leq$, this is independent of our choice of $L$. 
+    
+    It is now routine to verify that $(N, +_N, \cdot_N)$ is a field, and hence a field extension 
+    of $K$, and that $N \subseteq E$ (Exercise: Verify this!). To see that $N$ is an 
+    algebraic field extension of $K$, 
+    fix an arbitrary $b \in N$. Then $b \in L$ for some $(L, +_L, \cdot_L) \in C$. Since 
+    $L$ is an algebraic field extension of $K$, $b$ is algebraic over $K$. Thus, $N$ is an 
+    algebraic field extension of $K$. 
+    
+    Finally, the definition of $N$ makes it clear that it is a field extension of every element 
+    of $C$ and is thus an upper bound for $C$.
+  \end{proof}
+  
+  Now apply Zorn's lemma to find a maximal element $(L, +_L, \cdot_L)$ of $P$. We claim that 
+  $L$ is an algebraic closure of $K$. Since $(L, +_L, \cdot_L) \in P$, we know that it is 
+  an algebraic field extension of $K$. It thus remains to show that $L$ is algebraically closed.
+  
+  Suppose for the sake of contradiction that $L$ is not algebraically closed. Then there is 
+  a polynomial $p(x)$ over $L$ that does not have any roots in $L$. By Fact \ref{fact: adding_roots}, 
+  we can find an algebraic field extension $(M, +_M, \cdot_M)$ of $L$ such that $p$ has a root 
+  in $M$. Since $M$ is algebraic over $L$ and $L$ is algebraic over $K$, Exercise 
+  \ref{exercise: algebraic_transitive} implies that $M$ is algebraic over $K$. By 
+  Proposition \ref{prop: alg_ext}, we know that $|M| \leq \max\{|K|, \aleph_0\}$. 
+  Since $|E| > \max\{|K|, \aleph_0\}$, we can assume, by renaming elements of 
+  $M \setminus L$ if necessary, that $M \subseteq E$. But then $(M, +_M, \cdot_M) \in P$ 
+  and $(L, +_L, \cdot_L) \lneq (M, +_M, \cdot_M)$, contradicting the maximality of 
+  $(L, +_L, \cdot_L)$. Thus, $L$ is indeed algebraically closed and is hence an algebraic 
+  closure of $K$.
+\end{proof}
+
+So far we have been referring to \emph{an} algebraic closure of a field $K$, but the following 
+fact shows that algebraic closures are unique up to isomorphism, so it is in fact more common 
+to refer to \emph{the} algebraic closure of a field $K$. We will not give the proof of this 
+fact, but it can also be proved using Zorn's lemma.
+
+\begin{fact} \label{fact: alg_closure}
+  Suppose that $K$ is a field and that $L$ and $M$ are both algebraic closures of $K$. 
+  Then $L \cong M$.
+\end{fact}
+
+The notion of polynomial over a field can be broadened to incorporate more than one variable.
+Suppose that $n \in \bb{N}$ and $\mc{X} = \{x_1, \ldots, x_n\}$ is a set of $n$ variables. 
+Then a \emph{monomial} in $\mc{X}$ is an expression of the form 
+\[
+  \prod_{i=1}^n x_i^{k_i} = x_1^{k_1} x_2^{k_2} \cdots x_n^{k_n},
+\]
+where $k_i \in \bb{N}$ for all $1 \leq i \leq n$. For example, if $n = 3$, then the following are 
+all examples of monomials in $\mc{X}$:
+\[
+  1, \  x_1, \  x_1^2x_3^5, \  x_1^{10}x_2^3x_3.
+\]
+Now, if $F$ is a field, then a \emph{polynomial over $F$, with variables in $\mc{X}$}, 
+is an expression of the form 
+\[
+  p(x_1, \ldots, x_n) = \sum_{i = 0}^m a_i y_i = a_0y_0 + \cdots + a_my_m,
+\]
+where $m \in \bb{N}$ and, for each $i \leq m$, $a_i \in F$ and $y_i$ is a monomial in $\mc{X}$. 
+For example, if $n = 3$, then the following are examples of polynomials over $\bb{Q}$ with 
+variables in $\mc{X}$:
+\[
+  3 + 2x_1x_3^2 + \frac{2}{3}x_2^4, \ \frac{1}{2}x_3^6, \ 3 - 4x_1x_2 + 5x_1x_3 -6 x_2x_3.
+\]
+
+\begin{definition}
+  Suppose that $L$ is a field extension of $K$ and $B \subseteq L$. We say that $B$ is 
+  \emph{algebraically independent over $K$} if, for every finite subset 
+  $\{b_1, \ldots, b_n\} \subseteq B$, there is no polynomial $p(x_1, \ldots, x_n)$ over 
+  $K$ such that 
+  \[
+    p(b_1, \ldots, b_n) = 0.
+  \]
+\end{definition}
+
+\begin{exercise}
+  Suppose that $L$ is a field extension of $K$ and $B \subseteq L$ is algebraically 
+  independent over $K$. Prove that every element of $B$ is transcendental over $K$.
+\end{exercise}
+
+\begin{example}
+  Consider $\bb{R}$ as a field extension of $\bb{Q}$, and let $B = \{\pi, 2\sqrt{\pi}\}$. 
+  Then each element of $B$ is transcendental over $\bb{Q}$, but $B$ is not 
+  algebraically independent. To see this, consider the polynomial
+  \[
+    p(x_1, x_2) = 4x_1 - x_2^2.
+  \]
+  Then $p(x_1, x_2)$ is a polynomial over $\bb{Q}$ and 
+  \[
+    p(\pi, 2\sqrt\{\pi\}) = 4\pi - (2\sqrt{\pi})^2 = 4\pi - 4\pi = 0.
+  \]
+  
+  In the other direction, let $B' = \{e^{\sqrt{p}} \mid p \in \bb{N} \text{ is prime}\}$. 
+  Then $B'$ is algebraically independent over $\bb{Q}$ (this follows from the 
+  Lindemann-Weierstrass Theorem and is highly nontrivial).
+\end{example}
+
+\begin{definition}
+  Suppose that $L$ is a field extension of $K$. A \emph{transcendence basis for 
+  $L$ over $K$} is a set $B \subseteq L$ that is a maximal algebraically independent set 
+  over $K$, i.e., 
+  \begin{enumerate}
+    \item $B$ is algebraically independent over $K$;
+    \item for all $B' \subseteq L$ such that $B \subsetneq B'$, the set $B'$ is \emph{not} 
+    algebraically independent over $K$.
+  \end{enumerate}
+\end{definition}
+
+It is a straightforward application of Zorn's lemma to show that transcendence bases always 
+exist, so we leave it as an exercise:
+
+\begin{exercise}
+  Suppose that $L$ is a field extension of $K$. Then there exists a transcendence basis 
+  for $L$ over $K$. (Hint: Use Zorn's Lemma.)
+\end{exercise}
+
+If $L$ is a field extension of $K$, then it turns out that every transcendence basis for 
+$L$ over $K$ has the same cardinality:
+
+\begin{fact}
+  Suppose that $L$ is a field extension of $K$ and $B_0, B_1 \subseteq L$ are transcendence 
+  bases for $L$ over $K$. Then $|L| = |K|$.
+\end{fact}
+
+\begin{definition}
+  Suppose that $L$ is a field extension of $K$. Then the \emph{transcendence degree of $L$ 
+  over $K$} is defined to be $|B|$, where $B \subseteq L$ is a transcendence basis for $L$ 
+  over $K$.
+\end{definition}
+
+\begin{example}
+  \begin{enumerate}
+    \item The set $\{i\}$ is a transcendence basis for $\bb{C}$ over $\bb{R}$. Thus, the 
+    transcendence degree of $\bb{C}$ over $\bb{R}$ is $1$.
+    \item The transcendence degree of $\bb{R}$ over $\bb{Q}$ is $2^{\aleph_0}$.
+  \end{enumerate}
+\end{example}
+
+We saw the notion of a basis in the context of free abelian groups in the previous chapter. 
+In that setting, a basis was a maximal linearly independent subset of a free abelian group. 
+Here, maximality could be reformulated in terms of \emph{generating} the abelian group. 
+Something similar can be done here; to state the correct result, we first need some notation.
+
+\begin{definition}
+  Suppose that $L$ is a field extension of $K$ and $S \subseteq L$. Then $K(S)$ denotes the 
+  smallest subfield of $L$ that contains both $K$ and $S$ as subsets. Concretely, 
+  $K(S)$, is the intersection of all subfields $M$ of $L$ such that $K \cup S \subseteq M$.
+\end{definition}
+
+$K(S)$ can be thought of as the field extension of $K$ \emph{generated} by $S$. We can 
+now give an alternative characterization of transcendence bases, which we will not prove:
+
+\begin{fact} \label{fact: transcendence_basis}
+  Suppose that $L$ is a field extension of $K$ and $B \subseteq L$ is algebraically 
+  independent over $K$. Then the following are equivalent:
+  \begin{enumerate}
+    \item $B$ is a transcendence basis for $L$ over $K$;
+    \item $L$ is an algebraic field extension of $K(B)$.
+  \end{enumerate}
+\end{fact}
+
 \end{document}
