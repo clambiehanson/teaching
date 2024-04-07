@@ -290,7 +290,7 @@ Thus, $2 + \omega = \omega$. On the other hand, $\omega + 2$ is the order type o
 \[
   0 < 1 < 2 < \ldots < 0' < 1'
 \]
-This is clearly \emph{not} isomoprhic to the natural numbers; for example, it has a maximal element, 
+This is clearly \emph{not} isomorphic to the natural numbers; for example, it has a maximal element, 
 whereas that natural numbers do not. Thus, $\omega + 2 \neq \omega$, and in fact 
 $\omega <_{\mathrm{ord}} \omega + 2$.
 
@@ -675,7 +675,7 @@ practice.
 To motivate the statement of transfinite induction, recall classical induction on the natural numbers:
 
 \textbf{Principle of induction:} Suppose that $P$ is a property that can hold of natural numbers and 
-suppse that we know the following:
+suppose that we know the following:
 \begin{quote}
   For all $n \in \mathbb{N}$, if $P(m)$ holds for all $m < n$, then $P(n)$ holds.
 \end{quote}
@@ -1311,7 +1311,7 @@ following definition.
     \item (Translation invariance) If $X \subseteq \bb{R}$ and $a \in \bb{R}$, then 
     $m(X) = m(a + X)$, where $a + X$ denotes the set $\{a + x \mid x \in X\}$. In other words, 
     the measure of a set $X$ should not change if we simply shift it horizontally on the number line.
-    \item (Countable additivity) If $\mathcal{F}$ is a finite or countably infinite collection of 
+    \item (Countable additivity) If $\mathcal{F}$ is a finite or countably infinite collection of pairwise disjoint
     subsets of $\bb{R}$, then
     \[
       m\left(\bigcup \mathcal{F}\right) = \sum_{X \in \mathcal{F}} m(X).
@@ -1412,7 +1412,7 @@ how measures of size should behave.
   
   \begin{proof}
     We first show that $[0,1] \subseteq U$. Fix $a \in [0,1]$, and find $b \in X \cap (a + \bb{Q})$. 
-    Then $q = a - b$ is a rational number. Moroever, since $a$ and $b$ are both in the 
+    Then $q = a - b$ is a rational number. Moreover, since $a$ and $b$ are both in the 
     interval $[0,1]$, we must have $q \in [-1,1]$. But then $a = q + b \in q + X$, and 
     $q + X \subseteq U$, so $a \in U$.
     
@@ -1562,7 +1562,7 @@ ultrafilters}. More formally:
 
 We have seen that principal ultrafilters exist, so the question naturally arises whether 
 \emph{nonprincipal} ultrafilters exist. It turns out that, if $X$ is a \emph{finite} set, 
-then every ultrafilter over $X$ is finite:
+then every ultrafilter over $X$ is \emph{principal}:
 
 \begin{exercise}
   Suppose that $X$ is a finite nonempty set and $\mathcal{U}$ is an ultrafilter over $X$. 
@@ -1655,7 +1655,7 @@ of Zorn's lemma, is the key.
   contradiction that it is \emph{not} an ultrafilter. Then there is a set $Y \in \power(X)$ 
   such that $Y \notin \mathcal{G}$ and $X \setminus Y \notin \mathcal{G}$. Note that 
   $Y \neq \emptyset$, since $X \setminus \emptyset = X$ certainly is in $\mathcal{G}$. 
-  We claim that we can find an ultrafilter $\mathcal{H}$ in $P$ such that 
+  We claim that we can find a filter $\mathcal{H}$ in $P$ such that 
   $\mathcal{G} \cup \{Y\} \subseteq \mathcal{H}$, which will contradict the maximality 
   of $\mathcal{G}$. 
   
