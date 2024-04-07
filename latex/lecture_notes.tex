@@ -1661,7 +1661,7 @@ of Zorn's lemma, is the key.
   
   To see this, let 
   \[
-    \mathcal{H} = \mathcal{G} \cup \{Z \cap Y \mid Z \in \mathcal{G}\}.
+    \mathcal{H} = \{W \in \power(X) \mid \exists Z \in \mc{G} \ [Z \cap Y \subseteq W]\}.
   \]
   Clearly, $\mathcal{G} \subseteq \mathcal{H}$. Moreover, $Y \in \mathcal{H}$, since 
   $X \in \mathcal{G}$ and $X \cap Y = Y$. Therefore, we will be done if we show that $\mathcal{H}$ 
@@ -1673,45 +1673,17 @@ of Zorn's lemma, is the key.
     that $Z \subseteq (X \setminus Y)$ (Exercise: prove this!). Therefore, since 
     $\mc{G}$ is a filter, we must have $(X \setminus Y) \in \mc{G}$. But we chose $Y$ so that 
     $(X \setminus Y) \notin \mc{G}$, which yields a contradiction. Thus, $\emptyset \notin \mc{G}$.
-    \item Suppose that $W, W' \in \power(X)$, $W \subseteq W'$, and $W \in \mc{H}$. If 
-    $\mc{W} \in \mc{G}$, then, since $\mc{G}$ is a filter, it follows that $W' \in \mc{G}$ 
-    and hence $W' \in \mc{H}$. Otherwise, there is $Z \in \mc{G}$ such that 
-    $W = Z \cap Y$. Let $Z' = W' \cup (X \setminus Y)$.
-    \begin{claim}
-      $Z \subseteq Z'$ and $Z' \cap Y = W'$
-    \end{claim}
-    
-    \begin{proof}
-      To show that $Z \subseteq Z'$, fix $z \in Z$. If $z \in Y$, then $z \in W \subseteq W'$, so 
-      $z \in Z'$. If $z \notin Y$, then $z \in (X \setminus Y)$, so $z \in Z'$.
-      
-      To show that $Z' \cap Y = W'$, first fix $z \in Z' \cap Y$. Then $z \in Z'$ and $z \notin 
-      (X \setminus Y)$. By the definition of $Z'$, we must have $z \in W'$. The other direction 
-      is immediate: by the definition of $Z'$, we have $W' \subseteq Z'$.
-    \end{proof}
-    Since $Z \in \mc{G}$ and $\mc{G}$ is a filter, it follows that $Z' \in \mc{G}$. But then, 
-    by the definition of $\mc{H}$, we have $Z' \cap Y = W' \in \mc{H}$.
+    \item Suppose that $W, W' \in \power(X)$, $W \subseteq W'$, and $W \in \mc{H}$. 
+    We want to show that $W' \in \mc{H}$. By the definition of $\mc{H}$, 
+    there is $Z \in \mc{G}$ such that 
+    $Z \cap Y \subseteq W$. But then we also have $Z \cap Y \subseteq W'$, and hence 
+    $W' \in \mc{H}$.
     \item Suppose that $W,W' \in \power(X)$, $W \in \mc{H}$, and $W' \in \mc{H}$. We want to show 
-    that $W \cap W' \in \mc{H}$. There are three cases to consider.
-    \begin{itemize}
-      \item If both $W$ and $W'$ are in $\mc{G}$, then, since $\mc{G}$ is a filter, we have 
-      $W \cap W' \in \mc{G} \subseteq \mc{H}$.
-      \item If exactly one of $W$ and $W'$ is in $\mc{G}$, suppose without loss of generality 
-      that $W \in \mc{G}$ and $W' \notin \mc{G}$ (the other case is symmetric). 
-      Then there is $Z' \in \mc{G}$ such that $W' = Z' \cap Y$. Then 
-      \[
-        W \cap W' = W \cap Z' \cap Y = (W \cap Z') \cap Y.
-      \]
-      Since $\mc{G}$ is a filter, we have $W \cap Z' \in \mc{G}$. Thus, by the definition of 
-      $\mc{H}$, we have $(W \cap Z') \cap Y \in \mc{H}$, i.e., $W \cap W' \in \mc{H}$.
-      \item If neither of $W$ nor $W'$ is in $\mc{G}$, then there are $Z,Z' \in \mc{G}$ 
-      such that $W = Z \cap Y$ and $W' = Z' \cap Y$. Then
-      \[
-        W \cap W' = (Z \cap Y) \cap (Z' \cap Y) = (Z \cap Z') \cap Y.
-      \]
-      Since $\mc{G}$ is a filter, we have $(Z \cap Z') \in \mc{G}$. Then, as in the previous 
-      case, we have $(Z \cap Z') \cap Y \in \mc{H}$, i.e., $W \cap W' \in \mc{H}$.
-    \end{itemize}
+    that $W \cap W' \in \mc{H}$. By the definition of $\mc{H}$, there are $Z,Z' \in \mc{G}$ 
+    such that $Z \cap Y \subseteq W$ and $Z' \cap Y \subseteq W'$. Then, since $\mc{G}$ is 
+    a filter, we have $Z \cap Z' \in \mc{G}$. Moreover, we have 
+    $(Z \cap Z') \cap Y \subseteq W \cap W'$ (Exercise: prove this!), and hence 
+    $W \cap W' \in \mc{H}$.
   \end{enumerate}
   This completes the verification that $\mc{H}$ is a filter, and hence $\mc{H}$ witnesses that 
   $\mc{G}$ is not a maximal element of $P$, since $\mc{G} \subsetneq \mc{H}$. This is a contradiction; 
