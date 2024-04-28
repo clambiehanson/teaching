@@ -3162,7 +3162,7 @@ every subgroup of a free abelian group is itself free.
   $H$ is free.
 \end{proof}
 
-\chapter{Lecture 7: Bases in algebraic structures, Part II}
+\chapter{Lecture 7: Bases in algebraic structures, Part II} \label{chapter_7}
 
 We continue here our exploration of algebraic structures, moving from abelian groups to 
 \emph{fields}, and in particular \emph{algebraically closed fields}.
@@ -3597,7 +3597,7 @@ now give an alternative characterization of transcendence bases, which we will n
   \end{enumerate}
 \end{fact}
 
-\chapter{Lecture 8: Model theory of algebraically closed fields}
+\chapter{Lecture 8: Model theory of algebraically closed fields} \label{chapter_8}
 
 In this lecture, we will review some of the basic facts about algebraically 
 closed fields from a model theoretic perspective.
@@ -3790,7 +3790,7 @@ without giving proofs.
 \end{theorem}
 
 \begin{definition}
-  A theorey $T$ over a language $\mc{L}$ is said to have \emph{quantifier elimination} 
+  A theory $T$ over a language $\mc{L}$ is said to have \emph{quantifier elimination} 
   if, for every formula $\varphi(\bar{x})$ over $\mc{L}$ (with free variables in 
   $\bar{x}$), there is a formula $\psi(\bar{x})$ over $\mc{L}$ with \emph{no quantifiers} 
   such that
@@ -3874,5 +3874,534 @@ order of $\bb{C}$ that is definable over $(\bb{C}, +, -, \cdot, 0, 1)$.
   $\{b \in \bb{C} \mid a \prec b\}$ is a definable subset of $\bb{C}$ that is neither 
   finite nor cofinite, contradicting Theorem \ref{thm: strongly_minimal}.)
 \end{exercise}
+
+\chapter{Lecture 9: The Ax--Grothendieck Theorem (Part 1)}
+
+\begin{definition}
+  Let $K$ be a field, and let $n$ be a positive natural number. Then a \emph{polynomial map} 
+  from $K^n$ to $K^n$ is a map $f : K^n \ra K^n$ for which there exist polynomials 
+  $p_1(x_1, x_2, \ldots, x_n), p_2(x_1, x_2, \ldots, x_n), \ldots, p_n(x_1, x_2, \ldots, 
+  x_n)$, each with variables in $\{x_1, \ldots, x_n\}$ and coefficients in $K$, such that, 
+  for all $(a_1, a_2, \ldots, a_n) \in K^n$, we have
+  \[
+    f(a_1, a_2, \ldots, a_n) = (p_1(a_1, a_2, \ldots, a_n), p_2(a_1,a_2, \ldots, a_n), 
+    \ldots, p_n(a_1,a_2, \ldots, a_n)).
+  \]
+\end{definition}
+
+\begin{example} \label{example: polynomial_map}
+  \begin{enumerate}
+    \item The map $f: \bb{R} \ra \bb{R}$ defined by $f(x) = x^2$ is a polynomial map from 
+    $\bb{R}$ to $\bb{R}$.
+    \item The map $f: \bb{C}^2 \ra \bb{C}^2$ defined by $f(x,y) = (x^2 + x + y, \ x^2 + y)$ 
+    is a polynomial map from $\bb{C}^2$ to $\bb{C}^2$.
+  \end{enumerate}
+\end{example}
+
+This lecture is devoted to the proof of the following fundamental theorem about polynomial 
+maps between powers of $\bb{C}$. The theorem was proven independently by Ax and Grothendieck 
+in the 1960s.
+
+\begin{theorem} \label{thm: ax-grothendieck}
+  Suppose that $n$ is a positive natural number and $f : \bb{C}^n \ra \bb{C}^n$ is a polynomial 
+  map. If $f$ is injective, then $f$ is surjective.
+\end{theorem}
+
+\begin{remark}
+  We note that the converse of Theorem \ref{thm: ax-grothendieck} does not hold; there are 
+  plenty of polynomial maps from $\bb{C}^n$ to $\bb{C}^n$ that are surjective but not injective.
+  For example, the polynomial map $f:\bb{C} \ra \bb{C}$ defined by $f(x) = x^2$ is not injective 
+  since, for instance, $f(1) = f(-1) = 1$, but it is surjective (even though it is not surjective 
+  when considered as a map from $\bb{R}$ to $\bb{R}$.
+  
+  To see the utility of Theorem \ref{thm: ax-grothendieck}, consider the second map in 
+  Example \ref{example: polynomial_map}, the map $f: \bb{C}^2 \ra \bb{C}^2$ given by 
+  $f(x,y) = (x^2 + x + y, \ x^2 + y)$. It is not easy to tell by elementary means whether or 
+  not $f$ is surjective. However, one can readily show that it is injective (Exercise: Prove that 
+  $f$ is injective.), and then Theorem \ref{thm: ax-grothendieck} yields that it is surjective.
+\end{remark}
+
+There are two potentially surprising things about the Ax--Grothendieck theorem here. The first is 
+that such a fundamental theorem, about mathematical topics that had been studied already for 
+hundreds of years, was not proven until the 1960s. The second is that it is appearing in a course 
+on applications of logic and set theory to mathematics. On its face, this theorem has little to 
+do with logic, but, as we will see, the proof of the theorem (at least the one that we present here) 
+makes use of a great number of the logical and model theoretic tools that we have been developing 
+over the previous weeks.
+
+The first observation we make in the path to the proof of Theorem \ref{thm: ax-grothendieck} is 
+that the theorem becomes entirely trivial if, in its statement, one replaces $\bb{C}$ by a 
+finite field. In fact, the following stronger statement holds:
+
+\begin{exercise} \label{exercise: finite_ax_grothendieck}
+  Suppose that $X$ is a nonempty finite set and $f:X \ra X$ is a function. Then $f$ is injective if and 
+  only if $f$ is surjective. (Hint: This is simply a reformulation of the Pigeonhole Principle.)
+\end{exercise}
+
+The basic strategy of our proof of Theorem \ref{thm: ax-grothendieck} is now as follows: 
+We know that its analogue holds over finite fields; now use an ultraproduct construction 
+and \L os' Theorem to transfer this fact to infinite fields, and in particular to $\bb{C}$. 
+Of course, many details remain to be filled in. We begin by introducing the following fact 
+about finite fields. In what follows, given a field $K$, we let $\overline{K}$ denote its 
+algebraic closure (so, in particular, given a prime number $p$, $\overline{F_p}$ is the algebraic 
+closure of the finite field $F_p$).
+
+\begin{proposition} \label{prop: finite_field_completion}
+  Let $p$ be a prime number. Then there is a sequence $\langle F_{p,k} \mid k < \omega \rangle$ 
+  of finite fields such that
+  \begin{enumerate}
+    \item $F_{p,0} = F_p$;
+    \item for all $k < \omega$, we have $F_{p,k} \subseteq F_{p,k+1}$;
+    \item $\overline{F_p} = \bigcup_{k < \omega} F_{p,k}$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}[Sketch of proof]
+  A complete proof of this proposition would require some algebraic tools going beyond this 
+  course, but we give a sketch of the proof.
+  
+  First, since $F_p$ is finite, there are only countably many polynomials (in one variable) 
+  with coefficients in $F_p$. Let $\langle q_k \mid k < \omega \rangle$ enumerate all 
+  such polynomials. For each $k < \omega$, let $S_k$ denote the set of all roots of $q_k$ 
+  in $\overline{F_p}$, i.e., 
+  \[
+    S_k = \{a \in \overline{F_p} \mid q_k(a) = 0\}.
+  \]
+  By Fact \ref{fact: roots}, each $S_k$ is finite.
+  
+  We now construct $\langle F_{p,k} \mid k < \omega \rangle$ by recursion on $k$. First, 
+  we let $F_{p,0} = F_p$. Now suppose that $k < \omega$ and we have constructed 
+  $F_{p,k}$. In particular, $F_{p,k}$ is a finite field and, for all $j < k$, we have 
+  $F_{p,j} \subseteq F_{p,k} \subseteq \overline{F_p}$. Then let $F_{p,k+1} = F_{p,k}(S_k)$. 
+  Recall that $F_{p,k}(S_k)$ denotes the intersection of all subfields of 
+  $\overline{F_p}$ that contain both $P_{p,k}$ and $S_k$ as subsets. In other words, it is the 
+  minimal extension of $P_{p,k}$ containing all elements of $S_k$.
+  
+  The one part of this proof that we will not do in full is the verification that $F_{p,k}(S_k)$ 
+  is finite. But the idea of the argument is as follows: to form $F_{p,k}(S_k)$, one first 
+  adds all of the elements of $S_k$ to $F_{p,k}$, and then closes under the field operations. 
+  But both $S_k$ and $F_{p,k}$ are finite, and every element of $S_k$ is algebraic over 
+  $F_{p,k}$, so we only need to add finitely many elements to close under all field operations. 
+  See any textbook on field theory for a more careful proof of this fact.
+  
+  It remains to verify item (3) in the statement of the proposition, namely that
+  \[
+    \overline{F_p} = \bigcup_{k < \omega} F_{p,k}.
+  \]
+  By construction, we have $F_{p,k} \subseteq \overline{F_p}$ for all $k < \omega$, so the 
+  inclusion
+  \[
+    \overline{F_p} \supseteq \bigcup_{k < \omega} F_{p,k}
+  \]
+  is immediate. For the reverse inclusion, fix an element $b \in \overline{F_p}$. Since 
+  $\overline{F_p}$ is an algebraic extension of $F_p$, there is a polynomial 
+  $q(x)$ over $F_p$ such that $q(b) = 0$. Then there is some $k < \omega$ such that 
+  $q = q_k$. But then $b \in S_k$, so, in particular, $b \in F_{p,k+1}$. Thus, 
+  \[
+    \overline{F_p} \subseteq \bigcup_{k < \omega} F_{p,k},
+  \]
+  completing the proof of the proposition.
+\end{proof}
+
+We are now in a position to prove the analogue of Theorem \ref{thm: ax-grothendieck} in 
+which $\bb{C}$ is replaced by $\overline{F_p}$ for some prime number $p$.
+
+\begin{theorem} \label{thm: char_p_ax-grothendieck}
+  Suppose that $p$ is a prime number, $n$ is a positive natural number, and 
+  $f : (\overline{F_p})^n \ra (\overline{F_p})^n$ is a polynomial map. If 
+  $f$ is injective, then $f$ is surjective.
+\end{theorem}
+
+\begin{proof}
+  Fix polynomials $q_1(x_1, \ldots, x_n), q_2(x_1, \ldots, x_n), \ldots, 
+  q_n(x_1, \ldots, x_n)$ such that, for all $(b_1, \ldots, b_n) \in (\overline{F_p})^n$, 
+  we have
+  \[
+    f(b_1, \ldots, b_n) = (q_1(b_1, \ldots, b_n), \ldots, q_n(b_1, \ldots, b_n)).
+  \]
+  Let $S$ be the set of all coefficients that appear in any of the polynomials 
+  $q_1, \ldots, q_n$. In particular, $S$ is a finite subset of $\overline{F_p}$.
+  We want to show that $f$ is surjective. To this end, fix a point 
+  $(c_1, \ldots, c_n) \in (\overline{F_p})^n$. We want to show that 
+  there exists $(b_1, \ldots, b_n) \in (\overline{F_p})^n$ such that 
+  $f(b_1, \ldots, b_n) = (c_1, \ldots c_n)$.
+  
+  Let $\langle F_{p,k} \mid k < \omega \rangle$ be given by Proposition 
+  \ref{prop: finite_field_completion}. In particular, $\langle F_{p,k} \mid k < \omega \rangle$ 
+  is a $\subseteq$-increasing sequence of finite fields such that
+  \[
+    \overline{F_p} = \bigcup_{k < \omega} F_{p,k}.
+  \]
+  It follows that we can find a sufficiently large $k < \omega$ such that
+  $S \cup \{c_1, \ldots, c_n\} \subseteq F_{p,k}$. Note the following points.
+  \begin{itemize}
+    \item For each $1 \leq m \leq n$, all of the coeffients of $q_m$ are in 
+    $F_{p,k}$, so $q_m$ is a polynomial over $F_{p,k}$. It follows that 
+    $f \restriction (F_{p,k})^n$ is a polynomial map from 
+    $(F_{p,k})^n$ to $(F_{p,k})^n$.
+    \item Since $f : (\overline{F_p})^n \ra (\overline{F_p})^n$ is injective, 
+    it follows that $f \restriction (F_{p,k})^n$ is an injective map from 
+    $(F_{p,k})^n$ to $(F_{p,k})^n$.
+  \end{itemize}
+  Note that $(F_{p,k})^n$ is a finite set.
+  We can therefore apply Exercise \ref{exercise: finite_ax_grothendieck} to 
+  conclude that $f \restriction (F_{p,k})^n$ is a surjective map from 
+  $(F_{p,k})^n$ to $(F_{p,k})^n$. But we have $(c_1, \ldots, c_n) \in 
+  (F_{p,k})^n$, so we can find $(b_1, \ldots, b_n) \in 
+  (F_{p,k})^n$ such that $f(b_1, \ldots, b_n) = (c_1, \ldots, c_n)$, as desired. 
+  This completes the proof that $f$ is surjective.
+\end{proof}
+
+\begin{remark}
+  Let us point out that it was important in the proof of Theorem \ref{thm: char_p_ax-grothendieck} 
+  that $f$ was a polynomial map, as this allowed us to find a $k < \omega$ such that 
+  $f \restriction (F_{p,k})^n$ is a map from $(F_{p,k})^n$ to $(F_{p,k})^n$. If 
+  $f$ were simply an arbitrary map, then there would be no guarantee that we could find 
+  $k$ such that the range of $f \restriction (F_{p,k})^n$ is contained in 
+  $(F_{p,k})^n$.
+\end{remark}
+
+\chapter{Lecture 10: The Ax--Grothendieck Theorem (Part 2)}
+
+In this lecture, we complete the proof of the Ax--Grothendieck Theorem 
+(Theorem \ref{thm: ax-grothendieck}). This is where we will put into play a 
+significant amount of the logical and model-theoretic machinery that we have 
+developed over the previous weeks.
+
+Let $P$ denote the set of all prime numbers, and let $U$ be a nonprincipal ultrafilter 
+over $P$. Recall that, for all $p \in P$, $\overline{F_p}$ is the algebraic closure of 
+the finite field $F_p$; each $\overline{F_p}$ is a countable algebraically closed field 
+of characteristic $p$.
+
+Let $K$ be the ultraproduct $\prod_{p \in P} \overline{F_p}/U$, considered as a structure 
+in the language of fields. Since each $\overline{F_p}$ is an algebraically closed field, 
+and hence a model of the theory $T_{\mathrm{ACF}}$ (recall Chapter \ref{chapter_8}), 
+\L os' Theorem (Theorem \ref{thm: los}) implies that $K$ is also a model of 
+$T_{\mathrm{ACF}}$, i.e., $K$ is an algebraically closed field.
+
+\begin{remark}
+  Although the fact that $K$ is an algebraically closed field follows directly from 
+  \L os' Theorem, it might be instructive to illustrate this fact more concretely.
+  
+  First, recall what the underlying set of $K$ is. Given functions $f,g \in 
+  \prod_{p \in P} \overline{F_p}$, we set $f =_U g$ if 
+  \[
+    \{p \in P \mid f(p) = g(p)\} \in U.
+  \]
+  This defines an equivalence relation on $\prod_{p \in P} \overline{F_p}$, and the 
+  underlying set of $K$ consists of equivalence classes $[f]_U$ of this equivalence 
+  relation.
+  
+  To see that $K$ is a field, we can explicitly define the field operations. Given 
+  $[f]_U$ and $[g]_U$ in $K$, we set $[f]_U + [g]_U = [h]_U$, where $h \in 
+  \prod_{p \in P} \overline{F_p}$ is defined by letting $h(p) = f(p) + g(p)$ for 
+  all $p \in P$. One can readily check that this is well-defined and specifies an 
+  operation that is commutative and associative. We define multiplication in an analogous 
+  way. 
+  
+  One can then check that $K$, with operations thusly defined, satisfies all of the field 
+  axioms. For instance, one can check that the additive identity of $K$ (the $0$ element) 
+  is given by $[c_0]_U$, where $c_0 \in \prod_{p \in P} \overline{F_p}$ is defined by 
+  letting $c_0(p) = 0$ for all $p \in P$. Now suppose we want to prove that every 
+  element of $K$ has an additive inverse. Fix an arbitrary element $[f]_U \in K$. 
+  Define a function $(-f) \in \prod_{p \in P} \overline{F_p}$ by letting 
+  $(-f)(p) = -(f(p))$ for every $p \in P$. Then, for every $p \in P$, we have 
+  $f(p) + (-f)(p) = f(p) - f(p) = 0$. Thus, $[f]_U + [(-f)]_U = [c_0]_U$, so 
+  $[(-f)]_U$ is the additive inverse to $[f]_U$. The other field axioms are verified 
+  in a similar manner.
+  
+  Finally, let us show that $K$ is algebraically closed. To this end, let $q(x)$ be 
+  a polynomial in one variable over $K$ of degree at least one. Then $q(x)$ is of the form 
+  $a_0 + a_1 x + \cdots + a_n x^n$, where $n \geq 1$ and $a_n \neq 0$. Each $a_i$ is in 
+  $K$, so, for each $i \leq n$, we can fix $f_i \in \prod_{p \in P} \overline{F_p}$ such 
+  that $a_i = [f_i]_U$. Since $a_n \neq 0$, we have $f_n \neq_U c_0$. We can therefore 
+  fix a set $R \in U$ such that, for all $p \in R$, we have $f_n(p) \neq 0$.
+  
+  For each $p \in R$, consider the polynomial
+  \[
+    q_p(x) = f_0(p) + f_1(p) x + \cdots + f_n(p) x^n
+  \]
+  over $\overline{F_p}$. Since $f_n(p) \neq 0$, $q_p(x)$ has degree $n > 0$. Since 
+  $\overline{F_p}$ is algebraically closed, we can fix a root $b_p \in \overline{F_p}$ 
+  for $q_p(x)$. Define a function $g \in \prod_{p \in P} \overline{F_p}$ by letting 
+  \[
+    g(p) = \begin{cases}
+      b_p & \text{if } p \in R \\
+      0 & \text{if} p \notin R
+    \end{cases}
+  \]
+  for all $p \in P$. Then, for all $p \in R$, we have $q_p(g(p)) = 0$, i.e.,
+  \[
+    f_0(p) + f_1(f) g(p) + \cdots + f_n(p) (g(p))^n = 0.
+  \]
+  Since $R \in U$, \L os' Theorem then implies that, in $K$, we have
+  \[
+    [f_0]_U + [f_1]_U [g]_U + \cdots + [f_n]_U ([g]_U)^n = [c_0]_U,
+  \]
+  i.e., $[g]_U$ is a root of $q(x)$ in $K$. Thus, $K$ is algebraically closed field.
+\end{remark}
+
+We now know that $K$ is an algebraically closed field. The next natural question is: what is 
+its characteristic?
+
+\begin{proposition}
+  $K$ has characteristic $0$.
+\end{proposition}
+
+\begin{proof}
+  Recall that, given a prime $p \in P$, we introduced in Chapter \ref{chapter_8} a 
+  sentence $\chi_p$ in the language of fields asserting that a given field has 
+  characteristic field. Concretely, $\chi_p$ is the simple sentence
+  \[
+    \underbrace{1 + 1 + \cdots + 1}_{\text{$p$ times}} = 0.
+  \]
+  Note that, if $p,p' \in P$ and $p \neq p'$, then $\overline{F_{p'}} \models 
+  \neg \chi_p$, since the characteristic of $\overline{F_{p'}}$ is $p'$, which 
+  is relatively prime to $p$. Since $U$ is a nonprincipal ultrafilter, we know that, 
+  for every $p \in P$, the set $P \setminus \{p\}$ is in $U$. For every 
+  $p' \in P \setminus \{p\}$, we have $\overline{F_{p'}} \models \neg \chi_p$, so, 
+  by \L os' Theorem, we have $K \models \neg \chi_p$. It follows that $K$ has 
+  characteristic $0$.
+\end{proof}
+
+The remaining fact about $K$ that we need to ascertain is its cardinality.
+
+\begin{proposition}
+  $|K| = 2^{\aleph_0}$.
+\end{proposition}
+
+\begin{proof}
+  We first show that $|K| \leq 2^{\aleph_0}$. To see this, we calculate the cardinality 
+  of $\prod_{p \in P} \overline{F_p}$. Since each $\overline{F_p}$ is countably infinite 
+  and $P$ is countably infinite, this product has size $\aleph_0^{\aleph_0} = 2^{\aleph_0}$.
+  Since $K$ consists of equivalence classes of an equivalence relation defined on 
+  $\prod_{p \in P} \overline{F_p}$, it follows that 
+  \[
+    |K| \leq \left| \prod_{p \in P} \overline{F_p} \right| = 2^{\aleph_0}.
+  \]
+  
+  For the other direction, we make use of the following basic set-theoretic claim.
+  
+  \begin{claim}
+    There is a sequence of functions
+    \[
+      \langle f_\alpha \mid \alpha < 2^{\aleph_0} \rangle
+    \]
+    from $\bb{N}$ to $\bb{N}$ such that, for all $\alpha < \beta < 2^{\aleph_0}$, $f_\alpha$ and 
+    $f_\beta$ are \emph{eventually different}, i.e., there is $k \in \bb{N}$ such that, for 
+    all $n > k$, we have $f_\alpha(n) \neq f_\beta(n)$.
+  \end{claim}
+  
+  \begin{proof}
+    For each $n \in \bb{N}$, let $S_n$ denote the set of sequences of natural numbers of length 
+    $n$ or, equivalently, the set of all functions from $\{0, \ldots, n-1\}$ to $\bb{N}$. 
+    Let $S = \bigcup_{n \in \bb{N}} S_n$. Each $S_n$ is countable, so $S$ is also countable. 
+    We can therefore fix a bijection $\pi : S \rightarrow \bb{N}$.
+    
+    Now let $\langle x_\alpha \mid \alpha < 2^{\aleph_0} \rangle$ be an injective sequence of 
+    functions from $\bb{N}$ to $\bb{N}$ (this exists by the definition of $2^{\aleph_0}$). 
+    In particular, for all $\alpha < \beta < 2^{\aleph_0}$, there is some $k \in \bb{N}$ 
+    such that $x_\alpha(k) \neq x_\beta(k)$. Now for each $\alpha < 2^{\aleph_0}$, define 
+    a function $f_\alpha : \bb{N} \ra \bb{N}$ as follows. For each $n \in \bb{N}$, note 
+    that the restriction $x_\alpha \restriction \{0, \ldots, n-1\}$ is in $S_n$, and hence 
+    in $S$. Then, for all $n \in \bb{N}$, set
+    \[
+      f_\alpha(n) = \pi(x_\alpha \restriction \{0, \ldots, n-1\}).
+    \]
+    We claim that this definition satisfies the conclusion of the claim. To this end, fix 
+    $\alpha < \beta < 2^{\aleph_0}$. By our choice of $x_\alpha$ and $x_\beta$, we can 
+    fix $k \in \bb{N}$ such that $x_\alpha(k) \neq x_\beta(k)$. But then, for all 
+    $n > k$, we have $x_\alpha \restriction \{0, \ldots, n-1\} \neq 
+    x_\beta \restriction \{0, \ldots, n-1\}$ and hence, since $\pi$ is injective, we have
+    \[
+      f_\alpha(n) = \pi(x_\alpha \restriction \{0, \ldots, n-1\}) \neq 
+      \pi(x_\beta \restriction \{0, \ldots, n-1\}) = f_\beta(n).
+    \]
+    Thus, for all $n > k$, we have $f_\alpha(n) \neq f_\beta(n)$, as desired.
+  \end{proof}
+  
+  Fix a sequence $\langle f_\alpha \mid \alpha < 2^{\aleph_0} \rangle$ as in the claim. 
+  Let $\langle p_n \mid n \in \bb{N} \rangle$ be an increasing enumeration of $P$ and, 
+  for each $n \in \bb{N}$, let $\langle b^n_\ell \mid \ell \in \bb{N} \rangle$ be an injective 
+  enumeration of $\overline{F_{p_n}}$. Now, for each $\alpha < 2^{\aleph_0}$, define a function 
+  $g_\alpha \in \prod_{p \in P} \overline{F_p}$ by setting, for all $n \in \bb{N}$, 
+  $g_\alpha(p_n) = b^n_{f_\alpha(n)}$.
+  
+  Now suppose that we are given a pair $\alpha < \beta < 2^{\aleph_0}$. Fix $k \in \bb{N}$ such 
+  that, for all $n > k$, we have $f_\alpha(n) \neq f_\beta(n)$. Then, for all 
+  $n > k$, we also have $g_\alpha(p_n) \neq g_\beta(p_n)$. Since $U$ is a nonprincipal ultrafilter, 
+  we have $\{p_n \mid n > k\} \in U$. Therefore, it follows that $[g_\alpha]_U \neq [g_\beta]_U$. 
+  Thus,
+  \[
+    \langle [g_\alpha]_U \mid \alpha < 2^{\aleph_0} \rangle
+  \]
+  is an injective sequence of elements of $K$ of length $2^{\aleph_0}$, and hence 
+  $|K| \geq 2^{\aleph_0}$. 
+  
+  Putting the two inequalities together, we obtain $|K| = 2^{\aleph_0}$.
+\end{proof}
+
+We now know that $K$ is an algebraically closed field of characteristic $0$ and cardinality 
+$2^{\aleph_0}$. Moreover, we saw in Theorem \ref{thm: acf_cat} that the theory of algebraically 
+closed fields of characteristic $0$, $T_{\mathrm{ACF}_0}$, is uncountably categorical, i.e., 
+if $L_0$ and $L_1$ are two algebraically closed fields of characteristic $0$ and 
+$|L_0| = |L_1| > \aleph_0$, then $L_0 \cong L_1$. We know that the field $\bb{C}$ of complex 
+numbers is an algebraically closed field of characteristic $0$ and cardinality 
+$2^{\aleph_0}$. Therefore, we have $K \cong \bb{C}$.
+
+It follows that, in order to prove the Ax--Grothendieck Theorem (Theorem \ref{thm: ax-grothendieck}), 
+it suffices to prove the theorem with the field $K$ replacing the field $\bb{C}$, since the two are, 
+up to isomorphism, \emph{the same field}. More precisely, it suffices to prove the following theorem.
+
+\begin{theorem}
+  Suppose that $n$ is a positive natural number and $f : K^n \ra K^n$ is a polynomial map. 
+  If $f$ is injective, then $f$ is surjective.
+\end{theorem}
+
+\begin{proof}
+  Let $f:K^n \ra K^n$ be an injective polynomial map. By the definition of polynomial map, 
+  we can fix polynomials 
+  \[
+    q_1(x_1, \ldots, x_n), q_2(x_1, \ldots, x_n), \ldots, q_n(x_1, \ldots, x_n)
+  \]
+  over $K$ such that, for all $(b_1, \ldots, b_n) \in K^n$, we have
+  \[
+    f(b_1, \ldots, b_n) = (q_1(b_1, \ldots, b_n), q_2(b_1, \ldots, b_n), \ldots, q_n(b_1, \ldots, b_n)).
+  \]
+  We now show that, for each $i$ with $1 \leq i \leq n$, and for each $p \in P$, $q_i(x_1, \ldots, x_n)$ 
+  induces a polynomial $q_{i,p}(x_1, \ldots, x_n)$ over $\overline{F_p}$. 
+  
+  Fix an $i$ with $1 \leq i \leq n$. Let $M_i$ denote the set of monomials that appear with 
+  nonzero coefficients in $q_i(x_1, \ldots, x_n)$ (recall Chapter \ref{chapter_7}). In particular, 
+  for each $y \in M_i$, we can fix an element $a^i_y \in K$ in such a way that 
+  \[
+    q_i(x_1, \ldots, x_n) = \sum_{y \in M_i} a^i_y y.
+  \]
+  For each $y \in M_i$, fix a function $g^i_y \in \prod_{p \in P} \overline{F_p}$ such 
+  that $a^i_y = [g^i_y]_U$. Then define a polynomial $q_{i,p}(x_1, \ldots, x_n)$ over 
+  $\overline{F_p}$ by letting 
+  \[
+    q_{i,p}(x_1, \ldots, x_n) = \sum_{y \in M_i} g^i_y(p) y.  
+  \]
+  
+  \begin{exercise} \label{exercise: los_poly}
+    Suppose that $1 \leq i \leq n$ and $g_1, \ldots, g_n, h \in \prod_{p \in P} 
+    \overline{F_p}$. Prove that the following are equivalent:
+    \begin{enumerate}
+      \item $q_i([g_1]_U, \ldots, [g_n]_U) = [h]_U$;
+      \item the set $\{p \in P \mid q_{i,p}(g_1(p), \ldots, g_n(p)) = h(p)\}$ is in $U$.
+    \end{enumerate}
+    (Hint: Use \L os' Theorem.)
+  \end{exercise}  
+  
+  Finally, define a polynomial map $f_p : (\overline{F_p})^n \ra (\overline{F_p})^n$ by letting
+  \[
+    f_p(b_1, \ldots, b_n) = (q_{1,p}(b_1, \ldots, b_n), q_{2,p}(b_1, \ldots, b_n), \ldots, 
+    q_{n,p}(b_1, \ldots, b_n))
+  \]
+  for all $(b_1, \ldots, b_n) \in (\overline{F_p})^n$.
+  
+  \begin{claim}
+    $\{p \in P \mid f_p \text{ is injective}\} \in U$.
+  \end{claim}
+  
+  \begin{proof}
+    Suppose for the sake of contradiction that $R = \{p \in P \mid f_p \text{ is \emph{not} injective}\}$ 
+    is in $U$. For each $p \in R$, we can then fix two points $(b_{1,p}, \ldots, b_{n,p}) \neq 
+    (b'_{1,p}, \ldots, b'_{n,p})$ in $(\overline{F}_p)^n$ such that 
+    $f_p(b_{1,p}, \ldots, b_{n,p}) = f_p(b'_{1,p}, \ldots, b'_{n,p})$. Now, for each $i$ with 
+    $1 \leq i \leq n$, define two functions $h_i,h'_i \in \prod_{p \in P} \overline{F_p}$ by letting 
+    \[
+      h_i(p) = \begin{cases}
+        b_{i,p} & \text{if } p \in R \\ 
+        0 & \text{if } p \notin R
+      \end{cases}
+    \]
+    and
+    \[
+      h'_i(p) = \begin{cases}
+        b'_{i,p} & \text{if } p \in R \\ 
+        0 & \text{if } p \notin R
+      \end{cases}
+    \]
+    for all $p \in P$. 
+    
+    \begin{subclaim} \label{subclaim: distinction}
+      There is $i$ with $1 \leq i \leq n$ such that $[h_i]_U \neq [h'_i]_U$.
+    \end{subclaim}    
+    
+    \begin{proof}
+      Suppose for the sake of contradiction that $[h_i]_U = [h'_i]_U$ for all 
+      $i$ with $1 \leq i \leq n$. Then for each $i$, the set
+      \[
+        S_i = \{p \in P \mid h_i(p) = h'_i(p)\}
+      \]
+      is in $U$. Let $S = R \cap S_0 \cap S_1 \ldots \cap S_n$. Then $S \in U$. Moreover, for 
+      all $p \in S$ and all $i$ with $1 \leq i \leq n$, we have $h_i(p) = h'_i(p)$. Since 
+      $p \in R$, this implies $b_{i,p} = b'_{i,p}$. But this contradicts the fact that 
+      $(b_{1,p}, \ldots, b_{n,p}) \neq (b'_{1,p}, \ldots, b'_{n,p})$.
+    \end{proof}
+    
+    We know that, for all $p \in R$, for all $i$ with $1 \leq i \leq n$, we have 
+    \[
+      q_{i,p}(b_{1,p}, \ldots, b_{n,p}) = q_{i,p}(b'_{1,p}, \ldots, b'_{n,p}),
+    \]
+    i.e.,
+    \[
+      q_{i,p}(h_1(p), \ldots, h_n(p)) = q_{i,p}(h'_1(p), \ldots, h'_n(p)).
+    \]
+    Therefore, by \L os' Theorem (or Exercise \ref{exercise: los_poly}), we have
+    \[
+      q_i([h_1]_U, \ldots, [h_n]_U) = q_i([h'_1]_U, \ldots, [h'_n]_U).
+    \]
+    (Exercise: Check this!) Since this holds for all $1 \leq i \leq n$, we have
+    \[
+      f([h_1]_U, \ldots, [h_n]_U) = f([h'_1]_U, \ldots, [h'_n]_U).
+    \]
+    However, by Subclaim \ref{subclaim: distinction}, we have 
+    $([h_1]_U, \ldots, [h_n]_U) \neq ([h'_1]_U, \ldots, [h'_n]_U)$, so this contradicts the 
+    fact that $f$ is injective. This concludes the proof of the claim.
+  \end{proof}
+  
+  Let $J = \{p \in P \mid f_p \text{ is injective}\}$. By the preceding claim, we have 
+  $J \in U$. Moreover, by Theorem \ref{thm: char_p_ax-grothendieck}, for each $p \in J$, 
+  the polynomial map $f_p : (\overline{F_p})^n \ra (\overline{F_p})^n$ is surjective.
+  
+  We are now ready to prove that $f$ is surjective. To this end, fix $(c_1, \ldots, c_n) \in 
+  K^n$. We must find $(b_1, \ldots, b_n) \in K^n$ such that 
+  $f(b_1, \ldots, b_n) = (c_1, \ldots, c_n)$. For each $i$ with $1 \leq i \leq n$, fix a function 
+  $h_i \in \prod_{p \in P} \overline{F_p}$ wuch that $[h_i]_U = c_i$. 
+  
+  For each $p \in J$, consider the point $(h_1(p), h_2(p), \ldots, h_n(p)) \in 
+  (\overline{F_p})^n$. Since $f_p$ is surjective, we can find a point 
+  $(b_{1,p}, b_{2,p}, \ldots, b_{n,p}) \in (\overline{F_p})^n$ such that 
+  $f_p(b_{1,p}, \ldots, b_{n,p}) = (h_1(p), h_2(p), \ldots, h_n(p))$.
+  
+  For each $1 \leq i \leq n$, define a function $g^*_i \in \prod_{p \in P} 
+  \overline{F_p}$ by setting
+  \[
+    g^*_i(p) = \begin{cases}
+      b_{i,p} & \text{if } p \in J \\ 
+      0 & \text{if } p \notin J
+    \end{cases}
+  \]
+  for all $p \in P$. Now notice that, for all $p \in J$ and all $1 \leq i \leq n$, we have
+  \[
+    q_{i,p}(b_{1,p}, \ldots, b_{n,p}) = h_i(p),
+  \]
+  i.e., 
+  \[
+    q_{i,p}(g^*_1(p), \ldots, g^*_n(p)) = h_i(p).
+  \]
+  Therefore, by \L os' Theorem (or Exercise \ref{exercise: los_poly}), we have
+  \[
+    q_i([g^*_1]_U, \ldots, [g^*_n]_U) = [h_i]_U = c_i.
+  \]
+  Since this holds for all $1 \leq i \leq n$, we have
+  \[
+    f([g^*_1]_U, \ldots, [g^*_n]_U) = (c_1, \ldots, c_n),
+  \]
+  thus completing the proof that $f$ is surjective.
+\end{proof}
 
 \end{document}
