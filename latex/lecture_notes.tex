@@ -1743,7 +1743,7 @@ as \emph{Condorcet's paradox}.
   preference, and the results are as follows:
   \begin{itemize}
     \item Individual $a$: $x < y < z$ (i.e., $z$ is $a$'s first choice, $y$ is their second choice, 
-    and $z$ is their third choice);
+    and $x$ is their third choice);
     \item Individual $b$: $y < z < x$;
     \item Individual $c$: $z < x < y$.
   \end{itemize}
@@ -1907,7 +1907,7 @@ in which the set of individuals and the set of alternatives are allowed to be in
       \item for all $a \in A^c$, $y <_{f(a)} x$;
       \item $x <_{\sigma(f)} y$.
     \end{itemize}
-    In other words, $A$ is elmost decisive for $(x,y)$ if there is $f \in \mc{F}$ such that 
+    In other words, $A$ is almost decisive for $(x,y)$ if there is $f \in \mc{F}$ such that 
     $\sigma(f)$ ranks $y$ above $x$ and $A$ is precisely the set of individuals that 
     rank $y$ above $x$ in $f$.
   \end{definition}
@@ -2153,7 +2153,7 @@ Theorem \ref{thm: generalized_arrow}.
   Since $\sigma = \sigma_{\mc{U}}$, we have $A_{x,y} \in \mc{U}$. Since $\mc{X}$ is finite, 
   there are only finitely many pairs of distinct $x,y \in \mc{X}$. Thus, the set
   \[
-    A = \bigcup_{x \neq y \in \mc{X}} A_{x,y}
+    A = \bigcap_{x \neq y \in \mc{X}} A_{x,y}
   \]
    is in $\mc{U}$. But now one can check that, for all $a \in A$, we have 
    $f(a) = \sigma(f)$.
@@ -2319,7 +2319,7 @@ There are some things that should be verified for the above construction to make
 \begin{remark}
 Although we did not use the terminology, we actually saw an example of the ultraproduct in 
 the previous lecture. Recall the setup: we were given a set $\mc{V}$ of individuals and a set 
-$\mc{X}$ of individuals that they are choosing between. Each individual has a ranking of 
+$\mc{X}$ of alternatives that they are choosing between. Each individual has a ranking of 
 the alternatives in $\mc{X}$; formally, this is a linear order on $\mc{X}$. For each 
 $a \in \mc{V}$, let $<_a$ denote this order. We saw that one way to combine all of these 
 individual preferences into a societal preference $<^*$ is as follows: fix an ultrafilter 
